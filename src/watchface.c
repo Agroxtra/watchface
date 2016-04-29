@@ -14,7 +14,7 @@ static GFont s_weather_font;
 static GFont s_con_font;
 static GFont s_date_font;
 //static GFont s_seconds_font;
-static double seconds = 0;
+static int seconds = 0;
 static GColor secondsColor;
 
 
@@ -266,7 +266,6 @@ static void main_window_unload(Window *window){
 
 }
 
-
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
   seconds = tick_time->tm_sec;
@@ -282,7 +281,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
     app_message_outbox_send();
   }
 }
-
 
 static void init(void) {
 	s_main_window = window_create();
@@ -301,8 +299,6 @@ static void init(void) {
 static void deinit(void) {
   window_destroy(s_main_window);
 }
-
-
 
 int main(void) {
 	init();

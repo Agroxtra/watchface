@@ -13,6 +13,13 @@
     "resources": {
         "media": [
             {
+                "file": "images/PreviewImage",
+                "menuIcon": true,
+                "name": "IMAGE_PREVIEW",
+                "targetPlatforms": null,
+                "type": "png"
+            },
+            {
                 "file": "fonts/DateFont",
                 "name": "FONT_POPPINS_24",
                 "targetPlatforms": null,

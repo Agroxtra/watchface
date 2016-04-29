@@ -111,21 +111,25 @@ static int calcLen5(){
 
 static void update_display(Layer *layer, GContext *ctx){
   graphics_context_set_fill_color(ctx, secondsColor);
-  //len1 upper right streak 
+  
   int len1 = calcLen1();
+  int len2 = calcLen2();
+  int len3 = calcLen3();
+  int len4 = calcLen4();
+  int len5 = calcLen5();
+  
+  
+  //len1 upper right streak 
   graphics_fill_rect(ctx, GRect(72, 0, len1, 3), 0, 0);
   //len2 right streak
-  int len2 = calcLen2();
   graphics_fill_rect(ctx, GRect(144 - 3, 0, 3, len2), 0, 0);
   //len3 lower streak
-  int len3 = calcLen3();
   graphics_fill_rect(ctx, GRect(144 - len3, 168 - 3, len3, 3), 0, 0);
   //len4 left streak
-  int len4 = calcLen4();
   graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
   //len5 upper left streak
-  int len5 = calcLen5();
   graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
+
   //APP_LOG(APP_LOG_LEVEL_INFO, "test");
 }
 

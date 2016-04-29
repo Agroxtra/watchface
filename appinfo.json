@@ -1,0 +1,57 @@
+{
+    "appKeys": {
+        "KEY_CONDITIONS": 1,
+        "KEY_TEMPERATURE": 0
+    },
+    "capabilities": [
+        "location"
+    ],
+    "companyName": "martin.zoerfuss@kabelplus.at",
+    "enableMultiJS": true,
+    "longName": "Watchface",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "fonts/DateFont",
+                "name": "FONT_POPPINS_24",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "file": "fonts/ConnectionFont",
+                "name": "FONT_POPPINS_8",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "file": "fonts/SecondsFont",
+                "name": "FONT_POPPINS_18",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "file": "fonts/TimeFont",
+                "name": "FONT_POPPINS_48",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "file": "fonts/WeatherFont",
+                "name": "FONT_POPPINS_20",
+                "targetPlatforms": null,
+                "type": "font"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Watchface",
+    "targetPlatforms": [
+        "basalt"
+    ],
+    "uuid": "7675abce-0f4f-4e40-91b5-576a420f2a3e",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}

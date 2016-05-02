@@ -8,11 +8,13 @@ static TextLayer *s_time_layer;
 static TextLayer *s_weather_layer;
 static TextLayer *s_con_layer;
 static TextLayer *s_date_layer;
+static TextLayer *s_time_until_layer;
 //static TextLayer *s_seconds_layer;
 static GFont s_time_font;
 static GFont s_weather_font;
 static GFont s_con_font;
 static GFont s_date_font;
+static GFont s_time_until_font;
 //static GFont s_seconds_font;
 static int seconds = 0;
 static GColor secondsColor;
@@ -129,6 +131,7 @@ static void update_display(Layer *layer, GContext *ctx){
   graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
   //len5 upper left streak
   graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
+  
 
   //APP_LOG(APP_LOG_LEVEL_INFO, "test");
 }
@@ -192,54 +195,65 @@ static void main_window_load(Window *window){
 //  s_seconds_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_18));
   s_con_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_8));
   s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_24));
+  s_time_until_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));
   
   GRect bounds = layer_get_bounds(window_layer);
   Layer *layer = layer_create(bounds);
   window_set_background_color(window, GColorBlack);
   
 //  s_seconds_layer = text_layer_create(GRect(bounds.size.w - 26, PBL_IF_ROUND_ELSE(26, 20), 50, 30));
-  s_weather_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(125, 120), bounds.size.w, 30));
-  s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(26, 20), bounds.size.w, 50));
+  s_time_layer = text_layer_create(GRect(0, 7, bounds.size.w, 50));
+  s_date_layer = text_layer_create(GRect(0, 67, bounds.size.w, 30));
+  s_time_until_layer = text_layer_create(GRect(0, 95, bounds.size.w, 20));
+  s_weather_layer = text_layer_create(GRect(0, 120, bounds.size.w, 30));
   s_con_layer = text_layer_create(GRect(0, 150, bounds.size.w, 10));
-  s_date_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(85, 79), bounds.size.w, 30));
+ 
   
   text_layer_set_background_color(s_time_layer, GColorClear);
+  text_layer_set_background_color(s_date_layer, GColorClear);
+  text_layer_set_background_color(s_time_until_layer, GColorClear);
   text_layer_set_background_color(s_weather_layer, GColorClear);
   text_layer_set_background_color(s_con_layer, GColorClear);
-  text_layer_set_background_color(s_date_layer, GColorClear);
 //  text_layer_set_background_color(s_seconds_layer, GColorClear);
   
   text_layer_set_text_color(s_time_layer, GColorWhite);
-  text_layer_set_text_color(s_weather_layer, GColorWhite);
   text_layer_set_text_color(s_date_layer, GColorWhite);
+  text_layer_set_text_color(s_time_until_layer, GColorWhite);
+  text_layer_set_text_color(s_weather_layer, GColorWhite);
+  text_layer_set_text_color(s_con_layer, GColorWhite);
 //  text_layer_set_text_color(s_seconds_layer, GColorWhite);
   
   text_layer_set_text(s_time_layer, "00:00");
+  text_layer_set_text(s_time_until_layer, "50");
 //  text_layer_set_text(s_seconds_layer, "00");
   
   update_time();
   
   text_layer_set_font(s_time_layer, s_time_font);
+  text_layer_set_font(s_date_layer, s_date_font);
+  text_layer_set_font(s_time_until_layer, s_time_until_font);
   text_layer_set_font(s_weather_layer, s_weather_font);
   text_layer_set_font(s_con_layer, s_con_font);
-  text_layer_set_font(s_date_layer, s_date_font);
 //  text_layer_set_font(s_seconds_layer, s_seconds_font);
   
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
+  text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
+  text_layer_set_text_alignment(s_time_until_layer, GTextAlignmentCenter);
   text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
   text_layer_set_text_alignment(s_con_layer, GTextAlignmentCenter);
-  text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
 //  text_layer_set_text_alignment(s_seconds_layer, GTextAlignmentLeft);
   
   text_layer_set_text(s_weather_layer, "Loading...");
   
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
+  layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
+  layer_add_child(window_layer, text_layer_get_layer(s_time_until_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_weather_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_con_layer));
-  layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
   //  layer_add_child(window_layer, text_layer_get_layer(s_seconds_layer));
 
   layer_set_hidden(layer, false);
+  layer_set_hidden(text_layer_get_layer(s_time_until_layer), true);
   layer_add_child(window_layer, layer);
 
   //Handlers
@@ -257,10 +271,12 @@ static void main_window_unload(Window *window){
   text_layer_destroy(s_weather_layer);
   text_layer_destroy(s_con_layer);
   text_layer_destroy(s_date_layer);
+  text_layer_destroy(s_time_until_layer);
   fonts_unload_custom_font(s_date_font);
   fonts_unload_custom_font(s_time_font);
   fonts_unload_custom_font(s_con_font);
   fonts_unload_custom_font(s_weather_font);
+  fonts_unload_custom_font(s_time_until_font);
   //text_layer_destroy(s_seconds_layer);
   //fonts_unload_custom_font(s_seconds_font);
 

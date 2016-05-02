@@ -185,10 +185,25 @@ static void bluetooth_handler(bool con){
   }
 }
 
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
+  update_time();
+  seconds = tick_time->tm_sec;
+  if(tick_time->tm_min % 30 == 0) {
+    // Begin dictionary
+    DictionaryIterator *iter;
+    app_message_outbox_begin(&iter);
+
+    // Add a key-value pair
+    dict_write_uint8(iter, 0, 0);
+
+    // Send the message!
+    app_message_outbox_send();
+  }
+}
+
 static void main_window_load(Window *window){
   Layer *window_layer = window_get_root_layer(window);
   secondsColor = GColorRed;
-  battery_state_service_subscribe(battery_handler);
   
   s_weather_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));
   s_time_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_48));
@@ -258,15 +273,19 @@ static void main_window_load(Window *window){
 
   //Handlers
   layer_set_update_proc(layer, update_display);
-  
+  tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
   connection_service_subscribe((ConnectionHandlers) {
     .pebble_app_connection_handler = bluetooth_handler
   });
+  battery_state_service_subscribe(battery_handler);
   bluetooth_handler(connection_service_peek_pebble_app_connection());
   battery_handler(battery_state_service_peek());
 }
 
 static void main_window_unload(Window *window){
+  tick_timer_service_unsubscribe();
+  connection_service_unsubscribe();
+  battery_state_service_unsubscribe();
   text_layer_destroy(s_time_layer);
   text_layer_destroy(s_weather_layer);
   text_layer_destroy(s_con_layer);
@@ -282,27 +301,11 @@ static void main_window_unload(Window *window){
 
 }
 
-static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  update_time();
-  seconds = tick_time->tm_sec;
-  if(tick_time->tm_min % 30 == 0) {
-    // Begin dictionary
-    DictionaryIterator *iter;
-    app_message_outbox_begin(&iter);
-
-    // Add a key-value pair
-    dict_write_uint8(iter, 0, 0);
-
-    // Send the message!
-    app_message_outbox_send();
-  }
-}
 
 static void init(void) {
 	s_main_window = window_create();
   window_set_window_handlers(s_main_window, (WindowHandlers){.load = main_window_load, .unload = main_window_unload});
   window_stack_push(s_main_window, true);
-  tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
   app_message_register_inbox_received(inbox_received_callback);
   app_message_register_inbox_dropped(inbox_dropped_callback);
   app_message_register_outbox_failed(outbox_failed_callback);

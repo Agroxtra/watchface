@@ -20,6 +20,99 @@ static int seconds = 0;
 static GColor secondsColor;
 
 
+static void time_until_update(){
+  time_t temp = time(NULL);
+  struct tm *tick_time = localtime(&temp);
+  int hour = tick_time->tm_hour;
+  int minute = tick_time->tm_min;
+  int diff = 0;
+  if (hour >= 7 && minute >= 50 && hour <= 8 && minute <= 40){ // 1. lesson
+    if (hour == 7){
+      diff += 60 - 50;
+    }
+    diff += (40 - minute);
+  }
+  else if (hour >= 8 && minute > 40 && hour <= 9 && minute <= 30){ // 2. lesson
+    if (hour == 8){
+      diff += 60 - 40;
+    }
+    diff += (30 - minute);
+  }
+  else if (hour == 9 && minute > 30 && minute <= 35){
+    if (hour == 9){
+      diff += 60 - 30;
+    }
+    diff += (35 - minute);
+  }
+  else if (hour >= 9 && minute > 35 && hour <= 10 && minute <= 25){ // 3. lesson
+    if (hour == 9){
+      diff += 60 - 35;
+    }
+    diff += (25 - minute);
+  }
+  else if (hour == 10 && minute > 25 && minute <= 35){
+    if (hour == 10){
+      diff += 60 - 25;
+    }
+    diff += (35 - minute);
+  }
+  else if (hour >= 10 && minute > 35 && hour <= 11 && minute <= 25){ // 4. lesson
+    if (hour == 10){
+      diff += 60 - 35;
+    }
+    diff += (25 - minute);
+  }
+  else if (hour == 11 && minute > 25 && minute <= 30){
+    diff += (30 - minute);
+  }
+  else if (hour >= 11 && minute > 30 && hour <= 12 && minute <= 20){ // 5. lesson
+    if (hour == 11){
+      diff += 60 - 30;
+    }
+    diff += (20 - minute);
+  }
+  else if (hour == 12 && minute > 20 && minute <= 25){
+    diff += (25 - minute);
+  }
+  else if (hour >= 12 && minute > 25 && hour <= 13 && minute <= 15){ // 6. lesson
+    if (hour == 12){
+      diff += 60 - 25;
+    }
+    diff += (15 - minute);
+  }
+  else if (hour == 13 && minute > 15 && minute <= 25){
+    diff += (25 - minute);
+  }
+  else if (hour >= 13 && minute > 25 && hour <= 14 && minute <= 15){ // 7. lesson
+    if (hour == 13){
+      diff += 60 - 25;
+    }
+    diff += (15 - minute);
+  }
+  else if (hour == 14 && minute > 15 && minute <= 20){
+    diff += (20 - minute);
+  }
+  else if (hour >= 14 && minute > 20 && hour <= 15 && minute <= 10){ // 8. lesson
+    if (hour == 14){
+      diff += 60 - 20;
+    }
+    diff += (10 - minute);
+  }
+  else if (hour == 15 && minute > 10 && minute <= 15){
+    diff += (15 - minute);
+  }
+  else if (hour >= 15 && minute > 15 && hour <= 16 && minute <= 5){
+    if (hour == 15){
+      diff += 60 - 15;
+    }
+    diff += (5 - minute);
+  }
+  char buffer[32];
+  snprintf(buffer, sizeof(buffer), "%d", diff);
+  text_layer_set_text(s_time_until_layer, buffer);
+  layer_set_hidden(text_layer_get_layer(s_time_until_layer), diff == 0);
+  //APP_LOG(APP_LOG_LEVEL_INFO, buffer);
+}
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
@@ -29,14 +122,11 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   // Read tuples for data
   Tuple *temp_tuple = dict_find(iterator, KEY_TEMPERATURE);
   Tuple *conditions_tuple = dict_find(iterator, KEY_CONDITIONS);
-
+  
   // If all data is available, use it
-  //if(temp_tuple && conditions_tuple) {
   snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°C", (int)temp_tuple->value->int32);
   snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
   
-    //APP_LOG(APP_LOG_LEVEL_ERROR, conditions_buffer);
-  //}
   
   // Assemble full string and display
   snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
@@ -152,6 +242,7 @@ static void update_time() {
   // Display this time on the TextLayer
   text_layer_set_text(s_time_layer, s_buffer);
   text_layer_set_text(s_date_layer, s_date_buffer);
+  time_until_update();
 }
 
 static void battery_handler(BatteryChargeState charge_state) {
@@ -186,7 +277,9 @@ static void bluetooth_handler(bool con){
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  update_time();
+  if (tick_time->tm_sec){
+    update_time();
+  }
   seconds = tick_time->tm_sec;
   if(tick_time->tm_min % 30 == 0) {
     // Begin dictionary
@@ -242,7 +335,7 @@ static void main_window_load(Window *window){
   text_layer_set_text(s_time_until_layer, "50");
 //  text_layer_set_text(s_seconds_layer, "00");
   
-  update_time();
+  //update_time();
   
   text_layer_set_font(s_time_layer, s_time_font);
   text_layer_set_font(s_date_layer, s_date_font);
@@ -268,7 +361,7 @@ static void main_window_load(Window *window){
   //  layer_add_child(window_layer, text_layer_get_layer(s_seconds_layer));
 
   layer_set_hidden(layer, false);
-  layer_set_hidden(text_layer_get_layer(s_time_until_layer), true);
+  //layer_set_hidden(text_layer_get_layer(s_time_until_layer), true);
   layer_add_child(window_layer, layer);
 
   //Handlers
@@ -300,7 +393,6 @@ static void main_window_unload(Window *window){
   //fonts_unload_custom_font(s_seconds_font);
 
 }
-
 
 static void init(void) {
 	s_main_window = window_create();

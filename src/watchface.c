@@ -26,92 +26,109 @@ static void time_until_update(){
   int hour = tick_time->tm_hour;
   int minute = tick_time->tm_min;
   int diff = 0;
-  if (hour >= 7 && minute >= 50 && hour <= 8 && minute <= 40){ // 1. lesson
+  if ((hour == 7 && minute >= 50) || (hour == 8 && minute <= 40)){ // 1. lesson
     if (hour == 7){
-      diff += 60 - 50;
+      diff = 60 - minute + 40;
     }
-    diff += (40 - minute);
+    else {
+      diff = (40 - minute);
+    }
   }
-  else if (hour >= 8 && minute > 40 && hour <= 9 && minute <= 30){ // 2. lesson
+  else if ((hour == 8 && minute > 40) || (hour == 9 && minute <= 30)){ // 2. lesson
     if (hour == 8){
-      diff += 60 - 40;
+      diff = 60 - minute + 30;
     }
-    diff += (30 - minute);
+    else {
+      diff = (30 - minute);
+    }
   }
   else if (hour == 9 && minute > 30 && minute <= 35){
-    if (hour == 9){
-      diff += 60 - 30;
-    }
-    diff += (35 - minute);
+    diff = (35 - minute);
   }
-  else if (hour >= 9 && minute > 35 && hour <= 10 && minute <= 25){ // 3. lesson
+  else if ((hour == 9 && minute > 35) || (hour == 10 && minute <= 25)){ // 3. lesson
     if (hour == 9){
-      diff += 60 - 35;
+      diff = 60 - minute + 25;
     }
-    diff += (25 - minute);
+    else {
+      diff = (25 - minute);
+    }
   }
   else if (hour == 10 && minute > 25 && minute <= 35){
     if (hour == 10){
-      diff += 60 - 25;
+      diff = 60 - minute + 35;
     }
-    diff += (35 - minute);
+    else {
+      diff = (35 - minute);
+    }
   }
-  else if (hour >= 10 && minute > 35 && hour <= 11 && minute <= 25){ // 4. lesson
+  else if ((hour == 10 && minute > 35) || (hour == 11 && minute <= 25)){ // 4. lesson
     if (hour == 10){
-      diff += 60 - 35;
+      diff = 60 - minute + 25;
     }
-    diff += (25 - minute);
+    else {
+      diff = (25 - minute);
+    }
   }
   else if (hour == 11 && minute > 25 && minute <= 30){
     diff += (30 - minute);
   }
-  else if (hour >= 11 && minute > 30 && hour <= 12 && minute <= 20){ // 5. lesson
+  else if ((hour == 11 && minute > 30) || (hour == 12 && minute <= 20)){ // 5. lesson
     if (hour == 11){
-      diff += 60 - 30;
+      diff = 60 - minute + 20;
     }
-    diff += (20 - minute);
+    else {
+      diff = (20 - minute);
+    }
   }
   else if (hour == 12 && minute > 20 && minute <= 25){
-    diff += (25 - minute);
+    diff = (25 - minute);
   }
-  else if (hour >= 12 && minute > 25 && hour <= 13 && minute <= 15){ // 6. lesson
+  else if ((hour == 12 && minute > 25) || (hour == 13 && minute <= 15)){ // 6. lesson
     if (hour == 12){
-      diff += 60 - 25;
+      diff = 60 - minute + 15;
     }
-    diff += (15 - minute);
+    else {
+      diff = (15 - minute);
+    }
   }
   else if (hour == 13 && minute > 15 && minute <= 25){
     diff += (25 - minute);
   }
-  else if (hour >= 13 && minute > 25 && hour <= 14 && minute <= 15){ // 7. lesson
+  else if ((hour == 13 && minute > 25) || (hour == 14 && minute <= 15)){ // 7. lesson
     if (hour == 13){
-      diff += 60 - 25;
+      diff = 60 - minute + 15;
     }
-    diff += (15 - minute);
+    else {
+      diff = (15 - minute);
+    }
   }
   else if (hour == 14 && minute > 15 && minute <= 20){
     diff += (20 - minute);
   }
-  else if (hour >= 14 && minute > 20 && hour <= 15 && minute <= 10){ // 8. lesson
+  else if ((hour == 14 && minute > 20) || (hour == 15 && minute <= 10)){ // 8. lesson
     if (hour == 14){
-      diff += 60 - 20;
+      diff = 60 - minute + 10;
     }
-    diff += (10 - minute);
+    else {
+      diff = (10 - minute);
+    }
   }
   else if (hour == 15 && minute > 10 && minute <= 15){
     diff += (15 - minute);
   }
-  else if (hour >= 15 && minute > 15 && hour <= 16 && minute <= 5){
+  else if ((hour == 15 && minute > 15) || (hour == 16 && minute <= 5)){
     if (hour == 15){
-      diff += 60 - 15;
+      diff = 60 - minute + 5;
     }
-    diff += (5 - minute);
+    else {
+      diff = (5 - minute);
+    }
   }
   char buffer[32];
   snprintf(buffer, sizeof(buffer), "%d", diff);
   text_layer_set_text(s_time_until_layer, buffer);
-  layer_set_hidden(text_layer_get_layer(s_time_until_layer), diff == 0);
-  //APP_LOG(APP_LOG_LEVEL_INFO, buffer);
+  //layer_set_hidden(text_layer_get_layer(s_time_until_layer), diff == 0);
+//  APP_LOG(APP_LOG_LEVEL_INFO, buffer);
 }
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -363,7 +380,7 @@ static void main_window_load(Window *window){
   layer_set_hidden(layer, false);
   //layer_set_hidden(text_layer_get_layer(s_time_until_layer), true);
   layer_add_child(window_layer, layer);
-
+  
   //Handlers
   layer_set_update_proc(layer, update_display);
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
@@ -373,6 +390,7 @@ static void main_window_load(Window *window){
   battery_state_service_subscribe(battery_handler);
   bluetooth_handler(connection_service_peek_pebble_app_connection());
   battery_handler(battery_state_service_peek());
+  //update_time();
 }
 
 static void main_window_unload(Window *window){

@@ -1,7 +1,12 @@
 #include <pebble.h>
+#include <math.h>
 
 #define KEY_TEMPERATURE 0
 #define KEY_CONDITIONS 1
+#define PI 3.1415926535
+#define POS_X 72
+#define POS_Y 165/2
+#define DEG PI/180
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -165,63 +170,14 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
-static GPoint calcPos1(){
-  int pos = 72 + seconds * 10.2;
-  if (pos >= 138){
-    return GPoint(138, 4);
-  }
-  else {
-    return GPoint(pos, 4);
-  }
-}
-
-static GPoint calcPos2(){
-  int pos = seconds * 10.2 - calcPos1().x;
-  if (pos >= 161){
-    return GPoint(138, 161);
-  }
-  return GPoint(138, pos);
-}
-
-static GPoint calcPos3(){
-  int pos = (seconds - 24) * 10.2;
-  char buffer[3];
-  snprintf(buffer, sizeof(buffer), "%d s", seconds);
-  APP_LOG(APP_LOG_LEVEL_INFO, buffer);
-  if (pos >= 138){
-    return GPoint(138, 161);
-  }
-  return GPoint(pos, 161);
+static GPoint calc(){
+  return GPoint(cos((seconds * 6 -90)*DEG)*68+POS_X,sin((seconds*6-90)*DEG)*68+POS_Y);
 }
 
 static void update_display(Layer *layer, GContext *ctx){
   graphics_context_set_fill_color(ctx, secondsColor);
-  GPoint pos1 = calcPos1();
-  APP_LOG(APP_LOG_LEVEL_INFO, "updated");
-  if (pos1.x < 138) {
-    char seconds_buffer[32];
-    snprintf(seconds_buffer, sizeof(seconds_buffer), "%d;%d", seconds, pos1.x);
-    APP_LOG(APP_LOG_LEVEL_INFO, seconds_buffer);
-    graphics_fill_circle(ctx, pos1, 4);
-  }
-  else{
-    GPoint pos2 = calcPos2();
-    if (pos2.y < 161){
-      char seconds_buffer[32];
-      snprintf(seconds_buffer, sizeof(seconds_buffer), "%d;%d", seconds, pos2.y);
-      APP_LOG(APP_LOG_LEVEL_INFO, seconds_buffer);
-      graphics_fill_circle(ctx, pos2, 4);
-    }
-    else{
-      GPoint pos3 = calcPos3();
-      if (pos3.x < 138){
-        char seconds_buffer[32];
-        snprintf(seconds_buffer, sizeof(seconds_buffer), "%d;%d", seconds, pos3.x);
-        APP_LOG(APP_LOG_LEVEL_INFO, seconds_buffer);
-        graphics_fill_circle(ctx, pos3, 4);
-      }
-    }
-  }
+  
+  graphics_fill_circle(ctx, calc(), 3);
 }
 
 static void update_time() {

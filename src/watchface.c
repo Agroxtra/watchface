@@ -18,23 +18,8 @@ static GFont s_time_until_font;
 //static GFont s_seconds_font;
 static int seconds = 0;
 static GColor secondsColor;
+static Layer *layer;
 
-
-static Layer *l1;
-static Layer *l2;
-static Layer *l3;
-static Layer *l4;
-static Layer *l5;
-static int len1Old = 0;
-static int len2Old = 0;
-static int len3Old = 0;
-static int len4Old = 0;
-static int len5Old = 0;
-static Animation *anim1;
-static Animation *anim2;
-static Animation *anim3;
-static Animation *anim4;
-static Animation *anim5;
 
 
 
@@ -180,184 +165,63 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
-static int calcLen1(){
-  int countPixels = seconds * 10.4;
-  if (countPixels >= 72){
-    return 72;
+static GPoint calcPos1(){
+  int pos = 72 + seconds * 10.2;
+  if (pos >= 138){
+    return GPoint(138, 4);
   }
   else {
-    return countPixels;
+    return GPoint(pos, 4);
   }
 }
 
-static int calcLen2(){
-  if (calcLen1() == 72){
-    int countPixels = seconds * 10.4 - 72;
-    if (countPixels >= 168){
-      return 168;
-    }
-    else {
-      return countPixels;
-    }
+static GPoint calcPos2(){
+  int pos = seconds * 10.2 - calcPos1().x;
+  if (pos >= 161){
+    return GPoint(138, 161);
   }
-  return 0;
+  return GPoint(138, pos);
 }
 
-static int calcLen3(){
-  if (calcLen2() == 168){
-    int countPixels = seconds * 10.4 - 72 - 168;
-    if (countPixels >= 144){
-      return 144;
-    }
-    return countPixels;
+static GPoint calcPos3(){
+  int pos = (seconds - 24) * 10.2;
+  char buffer[3];
+  snprintf(buffer, sizeof(buffer), "%d s", seconds);
+  APP_LOG(APP_LOG_LEVEL_INFO, buffer);
+  if (pos >= 138){
+    return GPoint(138, 161);
   }
-  return 0;
+  return GPoint(pos, 161);
 }
-
-static int calcLen4(){
-  if (calcLen3() == 144){
-    int countPixels = seconds * 10.4 - 72 - 168 - 144;
-    if (countPixels >= 168){
-      return 168;
-    }
-    return countPixels;
-  }
-  return 0;
-}
-
-static int calcLen5(){
-  if (calcLen4() == 168){
-    int countPixels = seconds *10.4 - 72 - 168*2 - 144;
-    if (countPixels >= 72){
-      return 72;
-    }
-    return countPixels;
-  }
-  return 0;
-}
-
-
-static void l1_update(Layer *layer, GContext *ctx){
-  graphics_context_set_fill_color(ctx, secondsColor);
-  graphics_fill_rect(ctx, GRect(0,0,168, 168), 0, 0);
-}
-static void l2_update(Layer *layer, GContext *ctx){
-  graphics_context_set_fill_color(ctx, secondsColor);
-  graphics_fill_rect(ctx, GRect(0,0,168, 168), 0, 0);
-}
-static void l3_update(Layer *layer, GContext *ctx){
-  graphics_context_set_fill_color(ctx, secondsColor);
-  graphics_fill_rect(ctx, GRect(0,0,168, 168), 0, 0);
-}
-static void l4_update(Layer *layer, GContext *ctx){
-  graphics_context_set_fill_color(ctx, secondsColor);
-  graphics_fill_rect(ctx, GRect(0,0,168, 168), 0, 0);
-}
-static void l5_update(Layer *layer, GContext *ctx){
-  graphics_context_set_fill_color(ctx, secondsColor);
-  graphics_fill_rect(ctx, GRect(0,0,168, 168), 0, 0);
-}
-
-static void a1_stopped(Animation *animation, bool finished, void *context){
-  if (finished && calcLen1() == 72){
-    animation_schedule(anim2);
-  }
-}
-static void a2_stopped(Animation *animation, bool finished, void *context){
-  if (finished && calcLen2() == 168){
-    animation_schedule(anim3);
-  }
-}
-static void a3_stopped(Animation *animation, bool finished, void *context){
-  if (finished && calcLen3() == 144){
-    animation_schedule(anim4);
-  }
-}
-static void a4_stopped(Animation *animation, bool finished, void *context){
-  if (finished && calcLen4() == 168){
-    animation_schedule(anim5);
-  }
-}
-
-static void update_seconds(){
-  int len1 = calcLen1();
-  int len2 = calcLen2();
-  int len3 = calcLen3();
-  int len4 = calcLen4();
-  int len5 = calcLen5();
-  GRect start1 = GRect(72,0,len1Old,3);
-  GRect end1 = GRect(72, 0, len1, 3);
-  GRect start2 = GRect(141,0,3,len2Old);
-  GRect end2 = GRect(141, 0, 3,len2);
-  GRect start3 = GRect(144-len3Old,168-3,144,3);
-  GRect end3 = GRect(144-len3, 168-3, 144, 3);
-  GRect start4 = GRect(0,168-len4Old,3, 168);
-  GRect end4 = GRect(0,168-len4,3, 168);
-  GRect start5 = GRect(0,0,len5Old, 3);
-  GRect end5 = GRect(0, 0, len5, 3);
-  PropertyAnimation *p_anim1 = property_animation_create_layer_frame(l1, &start1, &end1);
-  anim1 = property_animation_get_animation(p_anim1);
-  animation_set_duration(anim1, 1040);
-  PropertyAnimation *p_anim2 = property_animation_create_layer_frame(l2, &start2, &end2);
-  anim2 = property_animation_get_animation(p_anim2);
-  animation_set_duration(anim2, 1040);
-  PropertyAnimation *p_anim3 = property_animation_create_layer_frame(l3, &start3, &end3);
-  anim3 = property_animation_get_animation(p_anim3);
-  animation_set_duration(anim3, 1040);
-  PropertyAnimation *p_anim4 = property_animation_create_layer_frame(l4, &start4, &end4);
-  anim4 = property_animation_get_animation(p_anim4);
-  animation_set_duration(anim4, 1040);
-  PropertyAnimation *p_anim5 = property_animation_create_layer_frame(l5, &start5, &end5);
-  anim5 = property_animation_get_animation(p_anim5);
-  animation_set_duration(anim5, 1040);
-  
-  animation_set_handlers(anim1,(AnimationHandlers) {
-    .stopped = a1_stopped
-  }, NULL);
-  animation_set_handlers(anim2,(AnimationHandlers) {
-    .stopped = a2_stopped
-  }, NULL);
-  animation_set_handlers(anim3,(AnimationHandlers) {
-    .stopped = a3_stopped
-  }, NULL);
-  animation_set_handlers(anim4,(AnimationHandlers) {
-    .stopped = a4_stopped
-  }, NULL);
-  
-  animation_schedule(anim1);
-  
-  len1Old = len1;
-  len2Old = len2;
-  len3Old = len3;
-  len4Old = len4;
-  len5Old = len5;
-}
-
-
 
 static void update_display(Layer *layer, GContext *ctx){
   graphics_context_set_fill_color(ctx, secondsColor);
-  
-  int len1 = calcLen1();
-  int len2 = calcLen2();
-  int len3 = calcLen3();
-  int len4 = calcLen4();
-  int len5 = calcLen5();
-  
-  
-  //len1 upper right streak 
-  graphics_fill_rect(ctx, GRect(72, 0, len1, 3), 0, 0);
-  //len2 right streak
-  graphics_fill_rect(ctx, GRect(144 - 3, 0, 3, len2), 0, 0);
-  //len3 lower streak
-  graphics_fill_rect(ctx, GRect(144 - len3, 168 - 3, len3, 3), 0, 0);
-  //len4 left streak
-  graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
-  //len5 upper left streak
-  graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
-  
-
-  //APP_LOG(APP_LOG_LEVEL_INFO, "test");
+  GPoint pos1 = calcPos1();
+  APP_LOG(APP_LOG_LEVEL_INFO, "updated");
+  if (pos1.x < 138) {
+    char seconds_buffer[32];
+    snprintf(seconds_buffer, sizeof(seconds_buffer), "%d;%d", seconds, pos1.x);
+    APP_LOG(APP_LOG_LEVEL_INFO, seconds_buffer);
+    graphics_fill_circle(ctx, pos1, 4);
+  }
+  else{
+    GPoint pos2 = calcPos2();
+    if (pos2.y < 161){
+      char seconds_buffer[32];
+      snprintf(seconds_buffer, sizeof(seconds_buffer), "%d;%d", seconds, pos2.y);
+      APP_LOG(APP_LOG_LEVEL_INFO, seconds_buffer);
+      graphics_fill_circle(ctx, pos2, 4);
+    }
+    else{
+      GPoint pos3 = calcPos3();
+      if (pos3.x < 138){
+        char seconds_buffer[32];
+        snprintf(seconds_buffer, sizeof(seconds_buffer), "%d;%d", seconds, pos3.x);
+        APP_LOG(APP_LOG_LEVEL_INFO, seconds_buffer);
+        graphics_fill_circle(ctx, pos3, 4);
+      }
+    }
+  }
 }
 
 static void update_time() {
@@ -412,15 +276,10 @@ static void bluetooth_handler(bool con){
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   if (tick_time->tm_sec == 0){
-    len1Old = 0;
-    len2Old = 0;
-    len3Old = 0;
-    len4Old = 0;
-    len5Old = 0;
     update_time();
   }
   seconds = tick_time->tm_sec;
-  update_seconds();
+  layer_mark_dirty(layer);
   if(tick_time->tm_min % 30 == 0) {
     // Begin dictionary
     DictionaryIterator *iter;
@@ -446,27 +305,8 @@ static void main_window_load(Window *window){
   s_time_until_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));
   
   GRect bounds = layer_get_bounds(window_layer);
-  Layer *layer = layer_create(bounds);
+  layer = layer_create(bounds);
   window_set_background_color(window, GColorBlack);
-  
-  
-  
-  l1 = layer_create(GRect(72,0,0,3));
-  l2 = layer_create(GRect(141,0,3,0));
-  l3 = layer_create(GRect(0, 168-3, 0, 3));
-  l4 = layer_create(GRect(0,0,3,0));
-  l5 = layer_create(GRect(0,0,0,3));
-  layer_set_update_proc(l1, l1_update);
-  layer_set_update_proc(l2, l2_update);
-  layer_set_update_proc(l3, l3_update);
-  layer_set_update_proc(l4, l4_update);
-  layer_set_update_proc(l5, l5_update);
-  layer_add_child(layer, l1);
-  layer_add_child(layer, l2);
-  layer_add_child(layer, l3);
-  layer_add_child(layer, l4);
-  layer_add_child(layer, l5);
-  
   
   
 //  s_seconds_layer = text_layer_create(GRect(bounds.size.w - 26, PBL_IF_ROUND_ELSE(26, 20), 50, 30));
@@ -525,7 +365,7 @@ static void main_window_load(Window *window){
   layer_add_child(window_layer, layer);
   
   //Handlers
-  //layer_set_update_proc(layer, update_display);
+  layer_set_update_proc(layer, update_display);
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
   connection_service_subscribe((ConnectionHandlers) {
     .pebble_app_connection_handler = bluetooth_handler
@@ -533,7 +373,7 @@ static void main_window_load(Window *window){
   battery_state_service_subscribe(battery_handler);
   bluetooth_handler(connection_service_peek_pebble_app_connection());
   battery_handler(battery_state_service_peek());
-  //update_time();
+  update_time();
 }
 
 static void main_window_unload(Window *window){

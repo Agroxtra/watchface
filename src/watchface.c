@@ -171,7 +171,12 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
 }
 
 static GPoint calc(){
-  return GPoint(cos((seconds * 6 -90)*DEG)*68+POS_X,sin((seconds*6-90)*DEG)*68+POS_Y);
+  GPoint p = GPoint(cos((seconds * 6 -90)*DEG)*68+POS_X,sin((seconds*6-90)*DEG)*68+POS_Y);
+  double k = p.y/p.x * 100;
+  char buffer[256];
+  snprintf(buffer, sizeof(buffer), "Sekunde %d: y(x) = %d * x", seconds, (int)k);
+  APP_LOG(APP_LOG_LEVEL_INFO, buffer);
+  return p;
 }
 
 static void update_display(Layer *layer, GContext *ctx){

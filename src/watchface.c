@@ -7,6 +7,7 @@
 #define POS_X 72
 #define POS_Y 165/2
 #define DEG PI/180
+#define DISTANCE 5
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -21,7 +22,7 @@ static GFont s_con_font;
 static GFont s_date_font;
 static GFont s_time_until_font;
 //static GFont s_seconds_font;
-static int seconds = 0;
+static int seconds = 18;
 static GColor secondsColor;
 static Layer *layer;
 
@@ -170,19 +171,86 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
+static GPoint calcNew(){
+  if (seconds == 0){
+    return GPoint(72, DISTANCE);
+  }
+  else if (seconds == 1){
+    return GPoint(80, DISTANCE);
+  }
+  else if (seconds == 2){
+    return GPoint(88, DISTANCE);
+  }
+  else if (seconds == 3){
+    return GPoint(97, DISTANCE);
+  }
+  else if (seconds == 4){
+    return GPoint(106, DISTANCE);
+  }
+  else if (seconds == 5){
+    return GPoint(116, DISTANCE);
+  }
+  else if (seconds == 6){
+    return GPoint(128, DISTANCE);
+  }
+  else if (seconds == 7){
+    return GPoint(142-DISTANCE, 8);
+  }
+  else if (seconds == 8){
+    return GPoint(142-DISTANCE, 21);
+  }
+  else if (seconds == 9){
+    return GPoint(142-DISTANCE, 33);
+  }
+  else if (seconds == 10){
+    return GPoint(142-DISTANCE, 44);
+  }
+  else if (seconds == 11){
+    return GPoint(142-DISTANCE, 54);
+  }
+  else if (seconds == 12){
+    return GPoint(142-DISTANCE, 61);
+  }
+  else if (seconds == 13){
+    return GPoint(142-DISTANCE, 67);
+  }
+  else if (seconds == 14){
+    return GPoint(142-DISTANCE, 74);
+  }
+  else if (seconds == 15){
+    return GPoint(142-DISTANCE, 81);
+  }
+  else if (seconds == 16){
+    return GPoint(142-DISTANCE, 88);
+  }
+  else if (seconds == 17){
+    return GPoint(142-DISTANCE, 96);
+  }
+  else if (seconds == 18){ // not tested yet
+    return GPoint(142-DISTANCE, 104);
+  }
+  return (GPoint(0,0));
+}
+
 static GPoint calc(){
-  GPoint p = GPoint(cos((seconds * 6 -90)*DEG)*68+POS_X,sin((seconds*6-90)*DEG)*68+POS_Y);
-  double k = p.y/p.x * 100;
-  char buffer[256];
+  GPoint p = GPoint(cos((seconds * 6 -90)*DEG)*110+POS_X,sin((seconds*6-90)*DEG)*110+POS_Y);
+  
+  
+  //double k = p.y/p.x;
+  
+  /*char buffer[256];
   snprintf(buffer, sizeof(buffer), "Sekunde %d: y(x) = %d * x", seconds, (int)k);
-  APP_LOG(APP_LOG_LEVEL_INFO, buffer);
+  APP_LOG(APP_LOG_LEVEL_INFO, buffer);*/
+  
   return p;
 }
 
 static void update_display(Layer *layer, GContext *ctx){
   graphics_context_set_fill_color(ctx, secondsColor);
-  
-  graphics_fill_circle(ctx, calc(), 3);
+  graphics_context_set_stroke_color(ctx, secondsColor);
+  graphics_context_set_stroke_width(ctx, 3);
+  graphics_draw_line(ctx, GPoint(POS_X, POS_Y), calc());
+  graphics_fill_circle(ctx, calcNew(), 3);
 }
 
 static void update_time() {
@@ -239,7 +307,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   if (tick_time->tm_sec == 0){
     update_time();
   }
-  seconds = tick_time->tm_sec;
+  //seconds = tick_time->tm_sec;
   layer_mark_dirty(layer);
   if(tick_time->tm_min % 30 == 0) {
     // Begin dictionary

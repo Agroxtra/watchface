@@ -8,6 +8,7 @@
 #define POS_Y 165/2
 #define DEG PI/180
 #define DISTANCE 5
+#define RADIUS_SECONDS 3
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -22,7 +23,7 @@ static GFont s_con_font;
 static GFont s_date_font;
 static GFont s_time_until_font;
 //static GFont s_seconds_font;
-static int seconds = 18;
+static int seconds = 59;
 static GColor secondsColor;
 static Layer *layer;
 
@@ -148,12 +149,12 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   // Read tuples for data
   Tuple *temp_tuple = dict_find(iterator, KEY_TEMPERATURE);
   Tuple *conditions_tuple = dict_find(iterator, KEY_CONDITIONS);
-  
+
   // If all data is available, use it
   snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°C", (int)temp_tuple->value->int32);
   snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
-  
-  
+
+
   // Assemble full string and display
   snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
   text_layer_set_text(s_weather_layer, weather_layer_buffer);
@@ -194,63 +195,194 @@ static GPoint calcNew(){
     return GPoint(128, DISTANCE);
   }
   else if (seconds == 7){
-    return GPoint(142-DISTANCE, 8);
+    return GPoint(144-DISTANCE, 8); // from here
   }
   else if (seconds == 8){
-    return GPoint(142-DISTANCE, 21);
+    return GPoint(144-DISTANCE, 21);
   }
   else if (seconds == 9){
-    return GPoint(142-DISTANCE, 33);
+    return GPoint(144-DISTANCE, 33);
   }
   else if (seconds == 10){
-    return GPoint(142-DISTANCE, 44);
+    return GPoint(144-DISTANCE, 44);
   }
   else if (seconds == 11){
-    return GPoint(142-DISTANCE, 54);
+    return GPoint(144-DISTANCE, 54);
   }
   else if (seconds == 12){
-    return GPoint(142-DISTANCE, 61);
+    return GPoint(144-DISTANCE, 61);
   }
   else if (seconds == 13){
-    return GPoint(142-DISTANCE, 67);
+    return GPoint(144-DISTANCE, 67);
   }
   else if (seconds == 14){
-    return GPoint(142-DISTANCE, 74);
+    return GPoint(144-DISTANCE, 74);
   }
   else if (seconds == 15){
-    return GPoint(142-DISTANCE, 81);
+    return GPoint(144-DISTANCE, 81);
   }
   else if (seconds == 16){
-    return GPoint(142-DISTANCE, 88);
+    return GPoint(144-DISTANCE, 88);
   }
   else if (seconds == 17){
-    return GPoint(142-DISTANCE, 96);
+    return GPoint(144-DISTANCE, 96);
   }
-  else if (seconds == 18){ // not tested yet
-    return GPoint(142-DISTANCE, 104);
+  else if (seconds == 18){
+    return GPoint(144-DISTANCE, 104);
   }
+  else if (seconds == 19){
+    return GPoint(144-DISTANCE, 111);
+  }
+  else if (seconds == 20){
+    return GPoint(144-DISTANCE, 120);
+  }
+  else if (seconds == 21){
+    return GPoint(144-DISTANCE, 129);
+  }
+  else if (seconds == 22){
+    return GPoint(144-DISTANCE, 141);
+  }
+  else if (seconds == 23){
+    return GPoint(144-DISTANCE, 156); // until here
+  }
+  else if (seconds == 24){
+    return GPoint(129, 165 - DISTANCE);
+  }
+  else if (seconds == 25){
+    return GPoint(117, 165 - DISTANCE);
+  }
+  else if (seconds == 26){
+    return GPoint(106, 165 - DISTANCE);
+  }
+  else if (seconds == 27){
+    return GPoint(97, 165 - DISTANCE);
+  }
+  else if (seconds == 28){
+    return GPoint(89, 165 - DISTANCE);
+  }
+  else if (seconds == 29){
+    return GPoint(80, 165 - DISTANCE);
+  }
+  else if (seconds == 30){
+    return GPoint(72, 165 - DISTANCE);
+  }
+  else if (seconds == 31){
+    return GPoint(64, 165 - DISTANCE);
+  }
+  else if (seconds == 32){
+    return GPoint(54, 165 - DISTANCE);
+  }
+  else if (seconds == 33){
+    return GPoint(46, 165 - DISTANCE);
+  }
+  else if (seconds == 34){
+    return GPoint(37, 165 - DISTANCE);
+  }
+  else if (seconds == 35){
+    return GPoint(27, 165 - DISTANCE);
+  }
+  else if (seconds == 36){
+    return GPoint(15, 165 - DISTANCE);
+  }
+  else if (seconds == 37){ // TODO: test from here on
+    return GPoint(DISTANCE, 153);
+  }
+  else if (seconds == 38){
+    return GPoint(DISTANCE, 140);
+  }
+  else if (seconds == 39){
+    return GPoint(DISTANCE, 128);
+  }
+  else if (seconds == 40){
+    return GPoint(DISTANCE, 118);
+  }
+  else if (seconds == 41){
+    return GPoint(DISTANCE, 109);
+  }
+  else if (seconds == 42){
+    return GPoint(DISTANCE, 101);
+  }
+  else if (seconds == 43){
+    return GPoint(DISTANCE, 92);
+  }
+  else if (seconds == 44){
+    return GPoint(DISTANCE, 86);
+  }
+  else if (seconds == 45){
+    return GPoint(DISTANCE, 80);
+  }
+  else if (seconds == 46){
+    return GPoint(DISTANCE, 73);
+  }
+  else if (seconds == 47){
+    return GPoint(DISTANCE, 66);
+  }
+  else if (seconds == 48){
+    return GPoint(DISTANCE, 58);
+  }
+  else if (seconds == 49){
+    return GPoint(DISTANCE, 50);
+  }
+  else if (seconds == 50){
+    return GPoint(DISTANCE, 42);
+  }
+  else if (seconds == 51){
+    return GPoint(DISTANCE, 32);
+  }
+  else if (seconds == 52){
+    return GPoint(DISTANCE, 20);
+  }
+  else if (seconds == 53){
+    return GPoint(DISTANCE, 6); // until here
+  }
+  else if (seconds == 54){
+    return GPoint(15, DISTANCE);
+  }
+  else if (seconds == 55){
+    return GPoint(26, DISTANCE);
+  }
+  else if (seconds == 56){
+    return GPoint(37, DISTANCE);
+  }
+  else if (seconds == 57){
+    return GPoint(47, DISTANCE);
+  }
+  else if (seconds == 58){
+    return GPoint(55, DISTANCE);
+  }
+  else if (seconds == 59){
+    return GPoint(63, DISTANCE);
+  }
+
+
   return (GPoint(0,0));
 }
 
 static GPoint calc(){
   GPoint p = GPoint(cos((seconds * 6 -90)*DEG)*110+POS_X,sin((seconds*6-90)*DEG)*110+POS_Y);
-  
-  
+
+
   //double k = p.y/p.x;
-  
+
   /*char buffer[256];
   snprintf(buffer, sizeof(buffer), "Sekunde %d: y(x) = %d * x", seconds, (int)k);
   APP_LOG(APP_LOG_LEVEL_INFO, buffer);*/
-  
+
   return p;
 }
 
 static void update_display(Layer *layer, GContext *ctx){
+  //seconds = 53;
   graphics_context_set_fill_color(ctx, secondsColor);
-  graphics_context_set_stroke_color(ctx, secondsColor);
-  graphics_context_set_stroke_width(ctx, 3);
-  graphics_draw_line(ctx, GPoint(POS_X, POS_Y), calc());
-  graphics_fill_circle(ctx, calcNew(), 3);
+  //graphics_context_set_stroke_color(ctx, secondsColor);
+  //graphics_context_set_stroke_width(ctx, RADIUS_SECONDS);
+  //graphics_draw_line(ctx, GPoint(POS_X, POS_Y), calc());
+  graphics_fill_circle(ctx, calcNew(), RADIUS_SECONDS);
+  //seconds = 0;
+  //graphics_context_set_stroke_color(ctx, secondsColor);
+  //graphics_context_set_stroke_width(ctx, RADIUS_SECONDS);
+  //graphics_draw_line(ctx, GPoint(POS_X, POS_Y), calc());
+  //graphics_fill_circle(ctx, calcNew(), RADIUS_SECONDS);
 }
 
 static void update_time() {
@@ -261,11 +393,11 @@ static void update_time() {
   // Write the current hours and minutes into a buffer
   static char s_buffer[10];
   static char s_date_buffer[12];
-//  static char s_buffer_seconds[3];
+  //static char s_buffer_seconds[3];
   strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ? "%H:%M" : "%I:%M", tick_time);
   strftime(s_date_buffer, sizeof(s_date_buffer),  "%d. %b", tick_time);
-//  strftime(s_buffer_seconds, sizeof(s_buffer_seconds), clock_is_24h_style() ? "%S":"%S", tick_time);
-  
+  //strftime(s_buffer_seconds, sizeof(s_buffer_seconds), clock_is_24h_style() ? "%S":"%S", tick_time);
+
   // Display this time on the TextLayer
   text_layer_set_text(s_time_layer, s_buffer);
   text_layer_set_text(s_date_layer, s_date_buffer);
@@ -307,7 +439,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   if (tick_time->tm_sec == 0){
     update_time();
   }
-  //seconds = tick_time->tm_sec;
+  seconds = tick_time->tm_sec;
   layer_mark_dirty(layer);
   if(tick_time->tm_min % 30 == 0) {
     // Begin dictionary
@@ -325,74 +457,63 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 static void main_window_load(Window *window){
   Layer *window_layer = window_get_root_layer(window);
   secondsColor = GColorRed;
-  
+
   s_weather_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));
   s_time_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_48));
-//  s_seconds_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_18));
   s_con_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_8));
   s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_24));
   s_time_until_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));
-  
+
   GRect bounds = layer_get_bounds(window_layer);
   layer = layer_create(bounds);
   window_set_background_color(window, GColorBlack);
-  
-  
-//  s_seconds_layer = text_layer_create(GRect(bounds.size.w - 26, PBL_IF_ROUND_ELSE(26, 20), 50, 30));
+
+
   s_time_layer = text_layer_create(GRect(0, 7, bounds.size.w, 50));
   s_date_layer = text_layer_create(GRect(0, 67, bounds.size.w, 30));
   s_time_until_layer = text_layer_create(GRect(0, 95, bounds.size.w, 20));
   s_weather_layer = text_layer_create(GRect(0, 120, bounds.size.w, 30));
   s_con_layer = text_layer_create(GRect(0, 150, bounds.size.w, 10));
- 
-  
+
+
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_background_color(s_date_layer, GColorClear);
   text_layer_set_background_color(s_time_until_layer, GColorClear);
   text_layer_set_background_color(s_weather_layer, GColorClear);
   text_layer_set_background_color(s_con_layer, GColorClear);
-//  text_layer_set_background_color(s_seconds_layer, GColorClear);
-  
   text_layer_set_text_color(s_time_layer, GColorWhite);
   text_layer_set_text_color(s_date_layer, GColorWhite);
   text_layer_set_text_color(s_time_until_layer, GColorWhite);
   text_layer_set_text_color(s_weather_layer, GColorWhite);
   text_layer_set_text_color(s_con_layer, GColorWhite);
-//  text_layer_set_text_color(s_seconds_layer, GColorWhite);
-  
+
   text_layer_set_text(s_time_layer, "00:00");
   text_layer_set_text(s_time_until_layer, "50");
-//  text_layer_set_text(s_seconds_layer, "00");
-  
-  //update_time();
-  
+
+
   text_layer_set_font(s_time_layer, s_time_font);
   text_layer_set_font(s_date_layer, s_date_font);
   text_layer_set_font(s_time_until_layer, s_time_until_font);
   text_layer_set_font(s_weather_layer, s_weather_font);
   text_layer_set_font(s_con_layer, s_con_font);
-//  text_layer_set_font(s_seconds_layer, s_seconds_font);
-  
+
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
   text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
   text_layer_set_text_alignment(s_time_until_layer, GTextAlignmentCenter);
   text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
   text_layer_set_text_alignment(s_con_layer, GTextAlignmentCenter);
-//  text_layer_set_text_alignment(s_seconds_layer, GTextAlignmentLeft);
-  
+
   text_layer_set_text(s_weather_layer, "Loading...");
-  
+
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_time_until_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_weather_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_con_layer));
-  //  layer_add_child(window_layer, text_layer_get_layer(s_seconds_layer));
 
   layer_set_hidden(layer, false);
-  //layer_set_hidden(text_layer_get_layer(s_time_until_layer), true);
   layer_add_child(window_layer, layer);
-  
+
   //Handlers
   layer_set_update_proc(layer, update_display);
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);

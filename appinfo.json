@@ -4,7 +4,8 @@
         "KEY_TEMPERATURE": 0
     },
     "capabilities": [
-        "location"
+        "location",
+        "configurable"
     ],
     "companyName": "martin.zoerfuss@kabelplus.at",
     "enableMultiJS": true,

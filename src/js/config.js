@@ -1,11 +1,3 @@
-var xhrRequest = function (url, type, callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.onload = function () {
-    callback(this.responseText);
-  };
-  xhr.open(type, url);
-  xhr.send();
-};
 
 function locationSuccess(pos) {
   // We will request the weather here
@@ -30,8 +22,7 @@ function locationSuccess(pos) {
 
       dictionary = {
         'KEY_TEMPERATURE': temperature,
-        'KEY_CONDITIONS': conditions,
-        'KEY_SECONDS_STYLE': getStyle()
+        'KEY_CONDITIONS': conditions
       };
 
       // Send to Pebble
@@ -48,34 +39,20 @@ function locationSuccess(pos) {
 
 
 
-}
 
+}
 function getStyle(){
   var style = 0;
-  //dictionary = {
-  return style;
-  //};
-  /*Pebble.sendAppMessage(dictionary,
+  dictionary = {
+    'KEY_SECONDS_STYLE': style,
+  };
+  Pebble.sendAppMessage(dictionary,
     function(e){
       console.log('style sent successfully');
     },
     function(e){
       console.log('Error sending style!');
     }
-  );*/
-}
-
-
-
-function locationError(err) {
-  console.log('Error requesting location!');
-}
-
-function getWeather() {
-  navigator.geolocation.getCurrentPosition(
-    locationSuccess,
-    locationError,
-    {timeout: 15000, maximumAge: 60000}
   );
 }
 
@@ -83,7 +60,7 @@ function getWeather() {
 Pebble.addEventListener('ready',
   function(e) {
     //console.log('PebbleKit JS ready!');
-    getWeather();
+    getStyle();
   }
 );
 
@@ -91,11 +68,9 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     //console.log('AppMessage received!');
-
-    getWeather();
+    getStyle();
   }
 );
-
 Pebble.addEventListener('showConfiguration',
   function(e) {
     Pebble.openURL('http://agroxtra.spieleckecker.com/pebble/watchface.html');

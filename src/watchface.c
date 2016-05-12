@@ -3,12 +3,13 @@
 
 #define KEY_TEMPERATURE 0
 #define KEY_CONDITIONS 1
+#define KEY_SECONDS_STYLE 2
 #define PI 3.1415926535
 #define POS_X 72
 #define POS_Y 165/2
 #define DEG PI/180
-#define DISTANCE 5
-#define RADIUS_SECONDS 3
+#define DISTANCE 6
+#define RADIUS_SECONDS 5
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -23,10 +24,10 @@ static GFont s_con_font;
 static GFont s_date_font;
 static GFont s_time_until_font;
 //static GFont s_seconds_font;
-static int seconds = 59;
+static int seconds = 0;
 static GColor secondsColor;
 static Layer *layer;
-
+static int secondsStyle = 0;
 
 
 
@@ -138,7 +139,7 @@ static void time_until_update(){
   snprintf(buffer, sizeof(buffer), "%d", diff);
   text_layer_set_text(s_time_until_layer, buffer);
   //layer_set_hidden(text_layer_get_layer(s_time_until_layer), diff == 0);
-//  APP_LOG(APP_LOG_LEVEL_INFO, buffer);
+  //APP_LOG(APP_LOG_LEVEL_INFO, buffer);
 }
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -146,14 +147,16 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   static char temperature_buffer[8];
   static char conditions_buffer[32];
   static char weather_layer_buffer[32];
+  //static char style_buffer[8];
   // Read tuples for data
   Tuple *temp_tuple = dict_find(iterator, KEY_TEMPERATURE);
   Tuple *conditions_tuple = dict_find(iterator, KEY_CONDITIONS);
+  Tuple *style_tuple = dict_find(iterator, KEY_SECONDS_STYLE);
 
   // If all data is available, use it
   snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°C", (int)temp_tuple->value->int32);
   snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
-
+  secondsStyle = (int)style_tuple->value->int32;
 
   // Assemble full string and display
   snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
@@ -195,7 +198,7 @@ static GPoint calcNew(){
     return GPoint(128, DISTANCE);
   }
   else if (seconds == 7){
-    return GPoint(144-DISTANCE, 8); // from here
+    return GPoint(144-DISTANCE, 8);
   }
   else if (seconds == 8){
     return GPoint(144-DISTANCE, 21);
@@ -243,7 +246,7 @@ static GPoint calcNew(){
     return GPoint(144-DISTANCE, 141);
   }
   else if (seconds == 23){
-    return GPoint(144-DISTANCE, 156); // until here
+    return GPoint(144-DISTANCE, 156);
   }
   else if (seconds == 24){
     return GPoint(129, 165 - DISTANCE);
@@ -284,7 +287,7 @@ static GPoint calcNew(){
   else if (seconds == 36){
     return GPoint(15, 165 - DISTANCE);
   }
-  else if (seconds == 37){ // TODO: test from here on
+  else if (seconds == 37){
     return GPoint(DISTANCE, 153);
   }
   else if (seconds == 38){
@@ -333,7 +336,7 @@ static GPoint calcNew(){
     return GPoint(DISTANCE, 20);
   }
   else if (seconds == 53){
-    return GPoint(DISTANCE, 6); // until here
+    return GPoint(DISTANCE, 6);
   }
   else if (seconds == 54){
     return GPoint(15, DISTANCE);
@@ -371,21 +374,99 @@ static GPoint calc(){
   return p;
 }
 
-static void update_display(Layer *layer, GContext *ctx){
-  //seconds = 53;
+static int calcLen1(){
+  int countPixels = seconds * 10.4;
+  if (countPixels >= 72){
+    return 72;
+  }
+  else {
+    return countPixels;
+  }
+}
+
+static int calcLen2(){
+  if (calcLen1() == 72){
+    int countPixels = seconds * 10.4 - 72;
+    if (countPixels >= 168){
+      return 168;
+    }
+    else {
+      return countPixels;
+    }
+  }
+  return 0;
+}
+
+static int calcLen3(){
+  if (calcLen2() == 168){
+    int countPixels = seconds * 10.4 - 72 - 168;
+    if (countPixels >= 144){
+      return 144;
+    }
+    return countPixels;
+  }
+  return 0;
+}
+
+static int calcLen4(){
+  if (calcLen3() == 144){
+    int countPixels = seconds * 10.4 - 72 - 168 - 144;
+    if (countPixels >= 168){
+      return 168;
+    }
+    return countPixels;
+  }
+  return 0;
+}
+
+static int calcLen5(){
+  if (calcLen4() == 168){
+    int countPixels = seconds *10.4 - 72 - 168*2 - 144;
+    if (countPixels >= 72){
+      return 72;
+    }
+    return countPixels;
+  }
+  return 0;
+}
+
+static void update_display_style2(Layer *layer, GContext *ctx){
+  graphics_context_set_fill_color(ctx, secondsColor);
+
+  int len1 = calcLen1();
+  int len2 = calcLen2();
+  int len3 = calcLen3();
+  int len4 = calcLen4();
+  int len5 = calcLen5();
+
+
+  //len1 upper right streak
+  graphics_fill_rect(ctx, GRect(72, 0, len1, 3), 0, 0);
+  //len2 right streak
+  graphics_fill_rect(ctx, GRect(144 - 3, 0, 3, len2), 0, 0);
+  //len3 lower streak
+  graphics_fill_rect(ctx, GRect(144 - len3, 168 - 3, len3, 3), 0, 0);
+  //len4 left streak
+  graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
+  //len5 upper left streak
+  graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
+
+
+  //APP_LOG(APP_LOG_LEVEL_INFO, "test");
+}
+
+static void update_display_style1(Layer *layer, GContext *ctx){
   graphics_context_set_fill_color(ctx, secondsColor);
   //graphics_context_set_stroke_color(ctx, secondsColor);
   //graphics_context_set_stroke_width(ctx, RADIUS_SECONDS);
   //graphics_draw_line(ctx, GPoint(POS_X, POS_Y), calc());
   graphics_fill_circle(ctx, calcNew(), RADIUS_SECONDS);
-  //seconds = 0;
-  //graphics_context_set_stroke_color(ctx, secondsColor);
-  //graphics_context_set_stroke_width(ctx, RADIUS_SECONDS);
-  //graphics_draw_line(ctx, GPoint(POS_X, POS_Y), calc());
-  //graphics_fill_circle(ctx, calcNew(), RADIUS_SECONDS);
 }
 
 static void update_time() {
+  char buffer[3];
+  snprintf(buffer, sizeof(buffer), "%d", secondsStyle);
+  APP_LOG(APP_LOG_LEVEL_INFO, buffer);
   // Get a tm structure
   time_t temp = time(NULL);
   struct tm *tick_time = localtime(&temp);
@@ -515,8 +596,13 @@ static void main_window_load(Window *window){
   layer_add_child(window_layer, layer);
 
   //Handlers
-  layer_set_update_proc(layer, update_display);
-  tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
+  if (secondsStyle == 1){
+    layer_set_update_proc(layer, update_display_style1);
+  }
+  else if (secondsStyle == 2){
+    layer_set_update_proc(layer, update_display_style2);
+  }
+  tick_timer_service_subscribe(secondsStyle == 0 ? MINUTE_UNIT : SECOND_UNIT, tick_handler);
   connection_service_subscribe((ConnectionHandlers) {
     .pebble_app_connection_handler = bluetooth_handler
   });

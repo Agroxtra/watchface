@@ -6,6 +6,7 @@ var xhrRequest = function (url, type, callback) {
   xhr.open(type, url);
   xhr.send();
 };
+var style = 0;
 
 function locationSuccess(pos) {
   // We will request the weather here
@@ -31,7 +32,7 @@ function locationSuccess(pos) {
       dictionary = {
         'KEY_TEMPERATURE': temperature,
         'KEY_CONDITIONS': conditions,
-        'KEY_SECONDS_STYLE': getStyle()
+        'KEY_SECONDS_STYLE': -1
       };
 
       // Send to Pebble
@@ -52,17 +53,11 @@ function locationSuccess(pos) {
 
 function getStyle(){
   var style = 0;
+  // Send to the watchapp via AppMessage
+
   //dictionary = {
-  return style;
-  //};
-  /*Pebble.sendAppMessage(dictionary,
-    function(e){
-      console.log('style sent successfully');
-    },
-    function(e){
-      console.log('Error sending style!');
-    }
-  );*/
+  return configData.KEY_SECONDS_STYLE;
+  //return style;
 }
 
 
@@ -99,5 +94,30 @@ Pebble.addEventListener('appmessage',
 Pebble.addEventListener('showConfiguration',
   function(e) {
     Pebble.openURL('http://agroxtra.spieleckecker.com/pebble/watchface.html');
+  }
+);
+
+Pebble.addEventListener("webviewclosed",
+  function(e) {
+    //Get JSON dictionary
+    var configuration = JSON.parse(decodeURIComponent(e.response));
+    console.log("Configuration window returned: " + JSON.stringify(configuration));
+
+    //Send to Pebble, persist there
+    var dictionary = {
+      'KEY_TEMPERATURE': -274,
+      'KEY_CONDITIONS': -1,
+      'KEY_SECONDS_STYLE': configuration.KEY_SECONDS_STYLE
+    };
+
+    // Send to Pebble
+    Pebble.sendAppMessage(dictionary,
+    function(e) {
+      //console.log('Weather info sent to Pebble successfully!');
+    },
+    function(e) {
+      //console.log('Error sending weather info to Pebble!');
+    }
+    );
   }
 );

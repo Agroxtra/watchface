@@ -24,12 +24,18 @@ static GFont s_con_font;
 static GFont s_date_font;
 static GFont s_time_until_font;
 //static GFont s_seconds_font;
-static int seconds = 0;
+static int seconds = 1;
+static int secondsOld = 0;
 static GColor secondsColor;
 static Layer *layer;
-static int secondsStyle = 0;
+static Layer *l;
+static int secondsStyle = 2;
 
 
+static void update_display_style1(Layer *layer, GContext *ctx);
+static void update_display_style2(Layer *layer, GContext *ctx);
+static void update_style();
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed);
 
 static void time_until_update(){
   time_t temp = time(NULL);
@@ -147,20 +153,53 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   static char temperature_buffer[8];
   static char conditions_buffer[32];
   static char weather_layer_buffer[32];
-  //static char style_buffer[8];
   // Read tuples for data
   Tuple *temp_tuple = dict_find(iterator, KEY_TEMPERATURE);
   Tuple *conditions_tuple = dict_find(iterator, KEY_CONDITIONS);
   Tuple *style_tuple = dict_find(iterator, KEY_SECONDS_STYLE);
+  if ((int)style_tuple->value->int32 != -1){
+    int secondsStyleOld = secondsStyle;
+    secondsStyle = (int)style_tuple->value->int32;
+    char buffer[15];
+    snprintf(buffer, sizeof(buffer), "%d", secondsStyle);
+    APP_LOG(APP_LOG_LEVEL_INFO, buffer);
+    if (secondsStyleOld != secondsStyle){
+      if (secondsStyleOld == 0){
+        tick_timer_service_unsubscribe();
+        tick_timer_service_subscribe(secondsStyle == 0 ? MINUTE_UNIT : SECOND_UNIT, tick_handler);
+      }
+      update_style();
+    }
+  }
+  char buffer1[12];
+  char buffer2[12];
+  //char bufferNull[4] = "null";
+
+  //snprintf(buffer1, sizeof(buffer1), "%s", temp_tuple->value->cstring);
+  //snprintf(buffer2, sizeof(buffer2), "%s", conditions_tuple->value->cstring);
+
+  if ((int)temp_tuple->value->int32 != -274 && (int)conditions_tuple->value->int32 != -1){
+    snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°C", (int)temp_tuple->value->int32);
+    snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
+    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
+    text_layer_set_text(s_weather_layer, weather_layer_buffer);
+  }
+
 
   // If all data is available, use it
-  snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°C", (int)temp_tuple->value->int32);
-  snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
-  secondsStyle = (int)style_tuple->value->int32;
+
+  //if (style_tuple != NULL){
+
+    //}
+    /*main_window_unload(s_main_window);
+    deinit();
+    init();
+    main_window_load(s_main_window);*/
+  //}
+  //secondsStyle = (int)style_tuple->value->int32;
 
   // Assemble full string and display
-  snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
-  text_layer_set_text(s_weather_layer, weather_layer_buffer);
+
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -374,7 +413,7 @@ static GPoint calc(){
   return p;
 }
 
-static int calcLen1(){
+static int calcLen1(int seconds){
   int countPixels = seconds * 10.4;
   if (countPixels >= 72){
     return 72;
@@ -384,8 +423,8 @@ static int calcLen1(){
   }
 }
 
-static int calcLen2(){
-  if (calcLen1() == 72){
+static int calcLen2(int seconds){
+  if (calcLen1(seconds) == 72){
     int countPixels = seconds * 10.4 - 72;
     if (countPixels >= 168){
       return 168;
@@ -397,8 +436,8 @@ static int calcLen2(){
   return 0;
 }
 
-static int calcLen3(){
-  if (calcLen2() == 168){
+static int calcLen3(int seconds){
+  if (calcLen2(seconds) == 168){
     int countPixels = seconds * 10.4 - 72 - 168;
     if (countPixels >= 144){
       return 144;
@@ -408,8 +447,8 @@ static int calcLen3(){
   return 0;
 }
 
-static int calcLen4(){
-  if (calcLen3() == 144){
+static int calcLen4(int seconds){
+  if (calcLen3(seconds) == 144){
     int countPixels = seconds * 10.4 - 72 - 168 - 144;
     if (countPixels >= 168){
       return 168;
@@ -419,8 +458,8 @@ static int calcLen4(){
   return 0;
 }
 
-static int calcLen5(){
-  if (calcLen4() == 168){
+static int calcLen5(int seconds){
+  if (calcLen4(seconds) == 168){
     int countPixels = seconds *10.4 - 72 - 168*2 - 144;
     if (countPixels >= 72){
       return 72;
@@ -430,27 +469,70 @@ static int calcLen5(){
   return 0;
 }
 
+static void update_layer(Layer *layer, GContext *ctx){
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_rect(ctx, GRect(0,0,11, 11), 0, 0);
+  APP_LOG(APP_LOG_LEVEL_INFO, "update_layer called");
+}
+
 static void update_display_style2(Layer *layer, GContext *ctx){
   graphics_context_set_fill_color(ctx, secondsColor);
 
-  int len1 = calcLen1();
-  int len2 = calcLen2();
-  int len3 = calcLen3();
-  int len4 = calcLen4();
-  int len5 = calcLen5();
+  int len1 = calcLen1(secondsOld);
+  int len2 = calcLen2(secondsOld);
+  int len3 = calcLen3(secondsOld);
+  int len4 = calcLen4(secondsOld);
+  int len5 = calcLen5(secondsOld);
 
 
   //len1 upper right streak
-  graphics_fill_rect(ctx, GRect(72, 0, len1, 3), 0, 0);
+  //graphics_fill_rect(ctx, GRect(72, 0, len1, 3), 0, 0);
   //len2 right streak
-  graphics_fill_rect(ctx, GRect(144 - 3, 0, 3, len2), 0, 0);
+  //graphics_fill_rect(ctx, GRect(144 - 3, 0, 3, len2), 0, 0);
   //len3 lower streak
-  graphics_fill_rect(ctx, GRect(144 - len3, 168 - 3, len3, 3), 0, 0);
+  //graphics_fill_rect(ctx, GRect(144 - len3, 168 - 3, len3, 3), 0, 0);
   //len4 left streak
-  graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
+  //graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
   //len5 upper left streak
-  graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
+  //graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
 
+  //Layer *l;
+  GRect r;
+  GRect e;
+  if (len1 < 72){
+    r = GRect(72 + len1, 0, 0, 3);
+    e = GRect(72 + len1, 0, 11, 3);
+  }
+  else if (len2 < 168){
+    r = GRect(141, len2, 3, 0);
+    e = GRect(141, len2, 3, 11);
+  }
+  else if (len3 < 144){
+    r = GRect(144 - len3, 165, 0, 3);
+    e = GRect(144 - len3, 165, 11, 3);
+  }
+  else if (len4 < 168){
+    r = GRect(0, 168 - len4, 3, 0);
+    e = GRect(0, 168 - len4, 3, 11);
+  }
+  else if (len5 < 72){
+    r = GRect(0, 0, 0, 3);
+    e = GRect(0, 0, 11, 3);
+  }
+
+  //l = layer_create(r);
+  //layer_set_update_proc(l, update_layer);
+  //layer_add_child(layer, l);
+  layer_set_hidden(l, false);
+  layer_set_bounds(l, e);
+  //update_layer(l, ctx);
+  APP_LOG(APP_LOG_LEVEL_INFO, "update_display_style2 called");
+  PropertyAnimation *anim = property_animation_create_layer_frame(l, &r, &e);
+  Animation *a = property_animation_get_animation(anim);
+  layer_mark_dirty(l);
+  animation_set_duration(a, 300);
+  animation_schedule(a);
+  secondsOld = seconds;
 
   //APP_LOG(APP_LOG_LEVEL_INFO, "test");
 }
@@ -483,6 +565,22 @@ static void update_time() {
   text_layer_set_text(s_time_layer, s_buffer);
   text_layer_set_text(s_date_layer, s_date_buffer);
   time_until_update();
+}
+
+static void update_style(){
+  if (secondsStyle == 1){
+    layer_set_update_proc(layer, update_display_style1);
+  }
+  else if (secondsStyle == 2){
+    l = layer_create(GRect(0,0,10,10));
+    layer_set_update_proc(l, update_layer);
+    layer_add_child(layer, l);
+
+    //layer_set_update_proc(l, update_layer);
+
+    layer_set_update_proc(layer, update_display_style2);
+
+  }
 }
 
 static void battery_handler(BatteryChargeState charge_state) {
@@ -596,12 +694,7 @@ static void main_window_load(Window *window){
   layer_add_child(window_layer, layer);
 
   //Handlers
-  if (secondsStyle == 1){
-    layer_set_update_proc(layer, update_display_style1);
-  }
-  else if (secondsStyle == 2){
-    layer_set_update_proc(layer, update_display_style2);
-  }
+  update_style();
   tick_timer_service_subscribe(secondsStyle == 0 ? MINUTE_UNIT : SECOND_UNIT, tick_handler);
   connection_service_subscribe((ConnectionHandlers) {
     .pebble_app_connection_handler = bluetooth_handler

@@ -24,11 +24,11 @@ static GFont s_con_font;
 static GFont s_date_font;
 static GFont s_time_until_font;
 //static GFont s_seconds_font;
-static int seconds = 0;
+static int seconds = 1;
+static int secondsOld = 0;
 static GColor secondsColor;
 static Layer *layer;
-static Layer *l;
-static int secondsStyle = 1;
+static int secondsStyle = 2;
 
 
 static void update_display_style1(Layer *layer, GContext *ctx);
@@ -168,14 +168,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
         tick_timer_service_subscribe(secondsStyle == 0 ? MINUTE_UNIT : SECOND_UNIT, tick_handler);
       }
       update_style();
+      persist_write_int(KEY_SECONDS_STYLE, secondsStyle);
     }
   }
-  char buffer1[12];
-  char buffer2[12];
-  //char bufferNull[4] = "null";
-
-  //snprintf(buffer1, sizeof(buffer1), "%s", temp_tuple->value->cstring);
-  //snprintf(buffer2, sizeof(buffer2), "%s", conditions_tuple->value->cstring);
 
   if ((int)temp_tuple->value->int32 != -274 && (int)conditions_tuple->value->int32 != -1){
     snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°C", (int)temp_tuple->value->int32);
@@ -468,12 +463,6 @@ static int calcLen5(int seconds){
   return 0;
 }
 
-static void update_layer(Layer *layer, GContext *ctx){
-  graphics_context_set_fill_color(ctx, GColorWhite);
-  graphics_fill_rect(ctx, GRect(0,0,11, 11), 0, 0);
-  APP_LOG(APP_LOG_LEVEL_INFO, "update_layer called");
-}
-
 static void update_display_style2(Layer *layer, GContext *ctx){
   graphics_context_set_fill_color(ctx, secondsColor);
 
@@ -494,15 +483,10 @@ static void update_display_style2(Layer *layer, GContext *ctx){
   graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
   //len5 upper left streak
   graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
-
-
 }
 
 static void update_display_style1(Layer *layer, GContext *ctx){
   graphics_context_set_fill_color(ctx, secondsColor);
-  //graphics_context_set_stroke_color(ctx, secondsColor);
-  //graphics_context_set_stroke_width(ctx, RADIUS_SECONDS);
-  //graphics_draw_line(ctx, GPoint(POS_X, POS_Y), calc());
   graphics_fill_circle(ctx, calcNew(), RADIUS_SECONDS);
 }
 
@@ -517,10 +501,8 @@ static void update_time() {
   // Write the current hours and minutes into a buffer
   static char s_buffer[10];
   static char s_date_buffer[12];
-  //static char s_buffer_seconds[3];
   strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ? "%H:%M" : "%I:%M", tick_time);
   strftime(s_date_buffer, sizeof(s_date_buffer),  "%d. %b", tick_time);
-  //strftime(s_buffer_seconds, sizeof(s_buffer_seconds), clock_is_24h_style() ? "%S":"%S", tick_time);
 
   // Display this time on the TextLayer
   text_layer_set_text(s_time_layer, s_buffer);
@@ -534,7 +516,9 @@ static void update_style(){
   }
   else if (secondsStyle == 2){
     layer_set_update_proc(layer, update_display_style2);
-
+  }
+  else if (secondsStyle == 0){
+    layer_set_update_proc(layer, NULL);
   }
 }
 
@@ -598,8 +582,10 @@ static void main_window_load(Window *window){
   s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_24));
   s_time_until_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));
 
-  window_set_background_color(window, GColorBlack);
   GRect bounds = layer_get_bounds(window_layer);
+  layer = layer_create(bounds);
+  window_set_background_color(window, GColorBlack);
+
 
   s_time_layer = text_layer_create(GRect(0, 7, bounds.size.w, 50));
   s_date_layer = text_layer_create(GRect(0, 67, bounds.size.w, 30));
@@ -622,7 +608,6 @@ static void main_window_load(Window *window){
   text_layer_set_text(s_time_layer, "00:00");
   text_layer_set_text(s_time_until_layer, "50");
 
-
   text_layer_set_font(s_time_layer, s_time_font);
   text_layer_set_font(s_date_layer, s_date_font);
   text_layer_set_font(s_time_until_layer, s_time_until_font);
@@ -643,6 +628,8 @@ static void main_window_load(Window *window){
   layer_add_child(window_layer, text_layer_get_layer(s_weather_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_con_layer));
 
+  layer_set_hidden(layer, false);
+  layer_add_child(window_layer, layer);
 
   //Handlers
   update_style();
@@ -670,9 +657,6 @@ static void main_window_unload(Window *window){
   fonts_unload_custom_font(s_con_font);
   fonts_unload_custom_font(s_weather_font);
   fonts_unload_custom_font(s_time_until_font);
-  //text_layer_destroy(s_seconds_layer);
-  //fonts_unload_custom_font(s_seconds_font);
-
 }
 
 static void init(void) {

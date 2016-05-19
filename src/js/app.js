@@ -107,7 +107,7 @@ Pebble.addEventListener("webviewclosed",
     var dictionary = {
       'KEY_TEMPERATURE': -274,
       'KEY_CONDITIONS': -1,
-      'KEY_SECONDS_STYLE': configuration.KEY_SECONDS_STYLE
+      'KEY_SECONDS_STYLE': parseInt(configuration.KEY_SECONDS_STYLE)
     };
 
     // Send to Pebble

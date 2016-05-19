@@ -8,4 +8,4 @@ PEBBLE_SDK_ROOT = '/Users/Martin/Library/Application Support/Pebble SDK/SDKs/cur
 PREFIX = '/usr/local'
 RESOURCES_JSON = [{u'type': u'png', u'menuIcon': True, u'targetPlatforms': None, u'name': u'IMAGE_PREVIEW', u'file': u'images/PreviewImage'}, {u'targetPlatforms': None, u'type': u'font', u'name': u'FONT_POPPINS_24', u'file': u'fonts/DateFont'}, {u'targetPlatforms': None, u'type': u'font', u'name': u'FONT_POPPINS_8', u'file': u'fonts/ConnectionFont'}, {u'targetPlatforms': None, u'type': u'font', u'name': u'FONT_POPPINS_18', u'file': u'fonts/SecondsFont'}, {u'targetPlatforms': None, u'type': u'font', u'name': u'FONT_POPPINS_48', u'file': u'fonts/TimeFont'}, {u'targetPlatforms': None, u'type': u'font', u'name': u'FONT_POPPINS_20', u'file': u'fonts/WeatherFont'}]
 TARGET_PLATFORMS = ['basalt']
-TIMESTAMP = 1463124522
+TIMESTAMP = 1463655623

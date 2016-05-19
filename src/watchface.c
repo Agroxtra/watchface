@@ -24,12 +24,11 @@ static GFont s_con_font;
 static GFont s_date_font;
 static GFont s_time_until_font;
 //static GFont s_seconds_font;
-static int seconds = 1;
-static int secondsOld = 0;
+static int seconds = 0;
 static GColor secondsColor;
 static Layer *layer;
 static Layer *l;
-static int secondsStyle = 2;
+static int secondsStyle = 1;
 
 
 static void update_display_style1(Layer *layer, GContext *ctx);
@@ -478,63 +477,25 @@ static void update_layer(Layer *layer, GContext *ctx){
 static void update_display_style2(Layer *layer, GContext *ctx){
   graphics_context_set_fill_color(ctx, secondsColor);
 
-  int len1 = calcLen1(secondsOld);
-  int len2 = calcLen2(secondsOld);
-  int len3 = calcLen3(secondsOld);
-  int len4 = calcLen4(secondsOld);
-  int len5 = calcLen5(secondsOld);
+  int len1 = calcLen1(seconds);
+  int len2 = calcLen2(seconds);
+  int len3 = calcLen3(seconds);
+  int len4 = calcLen4(seconds);
+  int len5 = calcLen5(seconds);
 
 
   //len1 upper right streak
-  //graphics_fill_rect(ctx, GRect(72, 0, len1, 3), 0, 0);
+  graphics_fill_rect(ctx, GRect(72, 0, len1, 3), 0, 0);
   //len2 right streak
-  //graphics_fill_rect(ctx, GRect(144 - 3, 0, 3, len2), 0, 0);
+  graphics_fill_rect(ctx, GRect(144 - 3, 0, 3, len2), 0, 0);
   //len3 lower streak
-  //graphics_fill_rect(ctx, GRect(144 - len3, 168 - 3, len3, 3), 0, 0);
+  graphics_fill_rect(ctx, GRect(144 - len3, 168 - 3, len3, 3), 0, 0);
   //len4 left streak
-  //graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
+  graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
   //len5 upper left streak
-  //graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
+  graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
 
-  //Layer *l;
-  GRect r;
-  GRect e;
-  if (len1 < 72){
-    r = GRect(72 + len1, 0, 0, 3);
-    e = GRect(72 + len1, 0, 11, 3);
-  }
-  else if (len2 < 168){
-    r = GRect(141, len2, 3, 0);
-    e = GRect(141, len2, 3, 11);
-  }
-  else if (len3 < 144){
-    r = GRect(144 - len3, 165, 0, 3);
-    e = GRect(144 - len3, 165, 11, 3);
-  }
-  else if (len4 < 168){
-    r = GRect(0, 168 - len4, 3, 0);
-    e = GRect(0, 168 - len4, 3, 11);
-  }
-  else if (len5 < 72){
-    r = GRect(0, 0, 0, 3);
-    e = GRect(0, 0, 11, 3);
-  }
 
-  //l = layer_create(r);
-  //layer_set_update_proc(l, update_layer);
-  //layer_add_child(layer, l);
-  layer_set_hidden(l, false);
-  layer_set_bounds(l, e);
-  //update_layer(l, ctx);
-  APP_LOG(APP_LOG_LEVEL_INFO, "update_display_style2 called");
-  PropertyAnimation *anim = property_animation_create_layer_frame(l, &r, &e);
-  Animation *a = property_animation_get_animation(anim);
-  layer_mark_dirty(l);
-  animation_set_duration(a, 300);
-  animation_schedule(a);
-  secondsOld = seconds;
-
-  //APP_LOG(APP_LOG_LEVEL_INFO, "test");
 }
 
 static void update_display_style1(Layer *layer, GContext *ctx){
@@ -572,12 +533,6 @@ static void update_style(){
     layer_set_update_proc(layer, update_display_style1);
   }
   else if (secondsStyle == 2){
-    l = layer_create(GRect(0,0,10,10));
-    layer_set_update_proc(l, update_layer);
-    layer_add_child(layer, l);
-
-    //layer_set_update_proc(l, update_layer);
-
     layer_set_update_proc(layer, update_display_style2);
 
   }
@@ -620,7 +575,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   }
   seconds = tick_time->tm_sec;
   layer_mark_dirty(layer);
-  if(tick_time->tm_min % 30 == 0) {
+  if(tick_time->tm_min % 30 == 0 && seconds == 0) {
     // Begin dictionary
     DictionaryIterator *iter;
     app_message_outbox_begin(&iter);
@@ -643,10 +598,8 @@ static void main_window_load(Window *window){
   s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_24));
   s_time_until_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));
 
-  GRect bounds = layer_get_bounds(window_layer);
-  layer = layer_create(bounds);
   window_set_background_color(window, GColorBlack);
-
+  GRect bounds = layer_get_bounds(window_layer);
 
   s_time_layer = text_layer_create(GRect(0, 7, bounds.size.w, 50));
   s_date_layer = text_layer_create(GRect(0, 67, bounds.size.w, 30));
@@ -690,8 +643,6 @@ static void main_window_load(Window *window){
   layer_add_child(window_layer, text_layer_get_layer(s_weather_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_con_layer));
 
-  layer_set_hidden(layer, false);
-  layer_add_child(window_layer, layer);
 
   //Handlers
   update_style();

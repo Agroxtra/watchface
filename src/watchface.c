@@ -46,7 +46,7 @@ static void time_until_update() {
     int hour = tick_time->tm_hour;
     int minute = tick_time->tm_min;
     int diff = 0;
-    char buffer[32];
+    //char buffer[32];
     if (hour != hours_to){
       diff += 60 - minute;
       diff += minutes_to;
@@ -55,15 +55,16 @@ static void time_until_update() {
       diff += (minutes_to - minute);
     }
     if (diff >= 0){
-      snprintf(buffer, sizeof(buffer), "%d", diff);
-      text_layer_set_text(s_time_until_layer, buffer);
-      char bu[32];
+      //snprintf(buffer, sizeof(buffer), "%d", diff);
+      //text_layer_set_text(s_time_until_layer, buffer);
+      char bu[10];
       snprintf(bu, sizeof(bu), "%d:%d", hours_to, minutes_to);
       APP_LOG(APP_LOG_LEVEL_INFO, bu);
       snprintf(bu, sizeof(bu), "%d:%d", hour, minute);
       APP_LOG(APP_LOG_LEVEL_INFO, bu);
       snprintf(bu, sizeof(bu), "%d", diff);
       APP_LOG(APP_LOG_LEVEL_INFO, bu);
+      text_layer_set_text(s_time_until_layer, bu);
       //layer_set_hidden(s_time_until_layer, false);
     }
     else {
@@ -455,6 +456,7 @@ static void update_time() {
   text_layer_set_text(s_time_layer, s_buffer);
   text_layer_set_text(s_date_layer, s_date_buffer);
   time_until_update();
+  //text_layer_set_text(s_time_until_layer, "test12");
 }
 
 static void update_style(){

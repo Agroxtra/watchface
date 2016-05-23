@@ -1529,12 +1529,12 @@ OUTPUT(/Users/Martin/Desktop/Desktop/pebble/watchface_old/watchface/build/aplite
 .debug_ranges   0x0000000000000000      0x130
  .debug_ranges  0x0000000000000000      0x130 src/watchface.c.14.o
 
-.debug_line     0x0000000000000000      0xbe7
- .debug_line    0x0000000000000000      0x5da src/watchface.c.14.o
- .debug_line    0x00000000000005da      0x157 aplite/appinfo.auto.c.14.o
- .debug_line    0x0000000000000731      0x20a /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
- .debug_line    0x000000000000093b      0x226 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
- .debug_line    0x0000000000000b61       0x86 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
+.debug_line     0x0000000000000000      0xbe5
+ .debug_line    0x0000000000000000      0x5d8 src/watchface.c.14.o
+ .debug_line    0x00000000000005d8      0x157 aplite/appinfo.auto.c.14.o
+ .debug_line    0x000000000000072f      0x20a /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
+ .debug_line    0x0000000000000939      0x226 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
+ .debug_line    0x0000000000000b5f       0x86 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
 
 .debug_str      0x0000000000000000     0x12a8
  .debug_str     0x0000000000000000     0x108f src/watchface.c.14.o

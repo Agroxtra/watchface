@@ -71,22 +71,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
     text_layer_set_text(s_weather_layer, weather_layer_buffer);
   }
-
-
-  // If all data is available, use it
-
-  //if (style_tuple != NULL){
-
-    //}
-    /*main_window_unload(s_main_window);
-    deinit();
-    init();
-    main_window_load(s_main_window);*/
-  //}
-  //secondsStyle = (int)style_tuple->value->int32;
-
-  // Assemble full string and display
-
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -101,62 +85,6 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
-
-
-/*static void time_until_update() {
-  if (hours_to >= 0 && minutes_to >= 0) {
-    time_t temp = time(NULL);
-    struct tm *tick_time = localtime(&temp);
-    int hour = tick_time->tm_hour;
-    int minute = tick_time->tm_min;
-    if (hour <= hours_to) {
-    int diff = 0;
-    //char buffer[32];
-    if (hour != hours_to){
-      while (hour > (hours_to+1)){
-        diff += 60;
-        hour += 1;
-      }
-      diff += 60 - minute;
-      diff += minutes_to;
-    }
-    else {
-      diff += (minutes_to - minute);
-    }
-    if (diff >= 0){
-      //snprintf(buffer, sizeof(buffer), "%d", diff);
-      //text_layer_set_text(s_time_until_layer, buffer);
-      char bu[8];
-      snprintf(bu, sizeof(bu), "%d:%d", hours_to, minutes_to);
-      APP_LOG(APP_LOG_LEVEL_INFO, bu);
-      snprintf(bu, sizeof(bu), "%d:%d", hour, minute);
-      APP_LOG(APP_LOG_LEVEL_INFO, bu);
-      snprintf(bu, sizeof(bu), "%d", diff);
-      APP_LOG(APP_LOG_LEVEL_INFO, bu);
-      snprintf(bu, sizeof(bu), "%dtest", 69);
-      text_layer_set_text(s_time_until_layer, bu);
-      //layer_set_hidden(s_time_until_layer, false);
-    }
-    else {
-      DictionaryIterator *iter;
-      app_message_outbox_begin(&iter);
-
-      // Add a key-value pair
-      dict_write_uint8(iter, 0, 0);
-
-      // Send the message!
-      app_message_outbox_send();
-      time_until_update();
-    }
-  }
-  }
-  else {
-    //layer_set_hidden(s_time_until_layer, true);
-  }
-
-  //layer_set_hidden(text_layer_get_layer(s_time_until_layer), diff == 0);
-  //APP_LOG(APP_LOG_LEVEL_INFO, buffer);
-}*/
 static void update_time_to(){
   DictionaryIterator *iter;
   app_message_outbox_begin(&iter);

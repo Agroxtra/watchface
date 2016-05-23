@@ -7,6 +7,8 @@ var xhrRequest = function (url, type, callback) {
   xhr.send();
 };
 var style = 0;
+var user;
+var pwd;
 
 /**
  * Created by eliaslipp on 03.05.16.
@@ -221,7 +223,7 @@ function differenceOfTime(time1, time2) {
 }
 
 function getUntil(){
-  var list = init("i13064", "hallolipp", "htlwrn");
+  var list = init(localStorage.KEY_UNTIS_USER, localStorage.KEY_UNTIS_PWD, "htlwrn");
   var time = getTime();
   var subject;
   for (var i = 0; i < list.length; i++) {
@@ -264,7 +266,9 @@ function locationSuccess(pos) {
       var minute;
       if (subject != null){
         var time = getTime();
-        if (time < subject.startTime){
+        var starttime = (subject.startHours*100) + subject.startMinutes
+        console.log(time + ' ' + starttime);
+        if (time < starttime){
           hour = subject.startHours;
           minute = subject.startMinutes;
         }
@@ -336,7 +340,6 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     //console.log('AppMessage received!');
-
     getWeather();
   }
 );
@@ -361,6 +364,13 @@ Pebble.addEventListener("webviewclosed",
       'KEY_MINUTES_TO': -1,
       'KEY_SECONDS_STYLE': parseInt(configuration.KEY_SECONDS_STYLE)
     };
+
+    user = configuration.KEY_UNTIS_USER;
+    pwd = configuration.KEY_UNTIS_PWD;
+    localStorage.KEY_UNTIS_USER = user;
+    localStorage.KEY_UNTIS_PWD = pwd;
+
+    //console.log(localStorage.KEY_UNTIS_USER + ' ' + localStorage.KEY_UNTIS_PWD);
 
     // Send to Pebble
     Pebble.sendAppMessage(dictionary,

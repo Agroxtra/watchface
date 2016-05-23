@@ -339,7 +339,7 @@ var style = 0;
 /**
  * Created by eliaslipp on 03.05.16.
  */
-window.onload = function () {
+/*window.onload = function () {
     var list = init("i13064", "hallolipp", "htlwrn");
     var time = getTime();
     var subject;
@@ -356,12 +356,9 @@ window.onload = function () {
         }
     }
     document.getElementById("main").innerHTML += "<br>Subject: " + subject.name + "<br>StartTime: " + subject.startHours + ":" + subject.startMinutes + "<br>EndTime:  " + subject.endHours + ":" + subject.endMinutes;
-};
+};*/
 
 function init(user, password, school) {
-    //var user = "i13064";
-    //var password = "hallolipp";
-    //var school = "htlwrn";
     var sessionId;
     var date = getDate();
 
@@ -551,6 +548,25 @@ function differenceOfTime(time1, time2) {
     return difference;
 }
 
+function getUntil(){
+  var list = init("i13064", "hallolipp", "htlwrn");
+  var time = getTime();
+  var subject;
+  for (var i = 0; i < list.length; i++) {
+      if (list[i].endTime >= time) {
+          subject = {name: list[i].name};
+          subject.endHours = convertToTime(list[i].endTime, "h");
+          subject.endMinutes = convertToTime(list[i].endTime, "m");
+          subject.startHours = convertToTime(list[i].startTime, "h");
+          subject.startMinutes = convertToTime(list[i].startTime, "m");
+          //var diffTime = differenceOfTime(list[i].endTime, time);
+          //subject.free = diffTime > 50;
+          break;
+      }
+  }
+  return subject;
+}
+
 function locationSuccess(pos) {
   // We will request the weather here
   var temperature = 99.9;
@@ -571,12 +587,29 @@ function locationSuccess(pos) {
       // Conditions
       conditions = json.weather[0].main;
       //console.log('Conditions are ' + conditions);
-
+      var subject = getUntil();
+      var hour;
+      var minute;
+      if (subject != null){
+        var time = getTime();
+        if (time < subject.startTime){
+          hour = subject.startHours;
+          minute = subject.startMinutes;
+        }
+        else {
+          hour = subject.endHours;
+          minute = subject.endMinutes;
+        }
+      }
+      else {
+        hour = -1;
+        minute = -1;
+      }
       dictionary = {
         'KEY_TEMPERATURE': temperature,
         'KEY_CONDITIONS': conditions,
-        'KEY_HOURS_TO': 9,
-        'KEY_MINUTES_TO': 20,
+        'KEY_HOURS_TO': hour,
+        'KEY_MINUTES_TO': minute,
         'KEY_SECONDS_STYLE': -1
       };
 
@@ -652,6 +685,8 @@ Pebble.addEventListener("webviewclosed",
     var dictionary = {
       'KEY_TEMPERATURE': -274,
       'KEY_CONDITIONS': -1,
+      'KEY_HOURS_TO': -1,
+      'KEY_MINUTES_TO': -1,
       'KEY_SECONDS_STYLE': parseInt(configuration.KEY_SECONDS_STYLE)
     };
 

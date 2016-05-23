@@ -1,15 +1,12 @@
 #include <pebble.h>
-#include <math.h>
 
 #define KEY_TEMPERATURE 0
 #define KEY_CONDITIONS 1
 #define KEY_HOURS_TO 2
 #define KEY_MINUTES_TO 3
 #define KEY_SECONDS_STYLE 4
-#define PI 3.1415926535
 #define POS_X 72
 #define POS_Y 165/2
-#define DEG PI/180
 #define DISTANCE 6
 #define RADIUS_SECONDS 5
 
@@ -39,54 +36,6 @@ static void update_display_style2(Layer *layer, GContext *ctx);
 static void update_style();
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed);
 
-static void time_until_update() {
-  if (hours_to >= 0 && minutes_to >= 0) {
-    time_t temp = time(NULL);
-    struct tm *tick_time = localtime(&temp);
-    int hour = tick_time->tm_hour;
-    int minute = tick_time->tm_min;
-    int diff = 0;
-    //char buffer[32];
-    if (hour != hours_to){
-      diff += 60 - minute;
-      diff += minutes_to;
-    }
-    else {
-      diff += (minutes_to - minute);
-    }
-    if (diff >= 0){
-      //snprintf(buffer, sizeof(buffer), "%d", diff);
-      //text_layer_set_text(s_time_until_layer, buffer);
-      char bu[10];
-      snprintf(bu, sizeof(bu), "%d:%d", hours_to, minutes_to);
-      APP_LOG(APP_LOG_LEVEL_INFO, bu);
-      snprintf(bu, sizeof(bu), "%d:%d", hour, minute);
-      APP_LOG(APP_LOG_LEVEL_INFO, bu);
-      snprintf(bu, sizeof(bu), "%d", diff);
-      APP_LOG(APP_LOG_LEVEL_INFO, bu);
-      text_layer_set_text(s_time_until_layer, bu);
-      //layer_set_hidden(s_time_until_layer, false);
-    }
-    else {
-      DictionaryIterator *iter;
-      app_message_outbox_begin(&iter);
-
-      // Add a key-value pair
-      dict_write_uint8(iter, 0, 0);
-
-      // Send the message!
-      app_message_outbox_send();
-      time_until_update();
-    }
-  }
-  else {
-    //layer_set_hidden(s_time_until_layer, true);
-  }
-
-  //layer_set_hidden(text_layer_get_layer(s_time_until_layer), diff == 0);
-  //APP_LOG(APP_LOG_LEVEL_INFO, buffer);
-}
-
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
   static char temperature_buffer[8];
@@ -100,19 +49,15 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   Tuple *minutes_to_tuple = dict_find(iterator, KEY_MINUTES_TO);
 
   if ((int)style_tuple->value->int32 != -1){
-    int secondsStyleOld = secondsStyle;
+    //int secondsStyleOld = secondsStyle;
     secondsStyle = (int)style_tuple->value->int32;
     char buffer[15];
     snprintf(buffer, sizeof(buffer), "%d", secondsStyle);
     APP_LOG(APP_LOG_LEVEL_INFO, buffer);
-    if (secondsStyleOld != secondsStyle){
-      if (secondsStyleOld == 0){
-        tick_timer_service_unsubscribe();
-        tick_timer_service_subscribe(secondsStyle == 0 ? MINUTE_UNIT : SECOND_UNIT, tick_handler);
-      }
-      update_style();
-      persist_write_int(KEY_SECONDS_STYLE, secondsStyle);
-    }
+    tick_timer_service_unsubscribe();
+    tick_timer_service_subscribe(secondsStyle == 0 ? MINUTE_UNIT : SECOND_UNIT, tick_handler);
+    update_style();
+    persist_write_int(KEY_SECONDS_STYLE, secondsStyle);
   }
 
   if ((int)hours_to_tuple->value->int32 != -1 && (int)minutes_to_tuple->value->int32 != -1){
@@ -154,6 +99,113 @@ static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResul
 
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+}
+
+
+
+/*static void time_until_update() {
+  if (hours_to >= 0 && minutes_to >= 0) {
+    time_t temp = time(NULL);
+    struct tm *tick_time = localtime(&temp);
+    int hour = tick_time->tm_hour;
+    int minute = tick_time->tm_min;
+    if (hour <= hours_to) {
+    int diff = 0;
+    //char buffer[32];
+    if (hour != hours_to){
+      while (hour > (hours_to+1)){
+        diff += 60;
+        hour += 1;
+      }
+      diff += 60 - minute;
+      diff += minutes_to;
+    }
+    else {
+      diff += (minutes_to - minute);
+    }
+    if (diff >= 0){
+      //snprintf(buffer, sizeof(buffer), "%d", diff);
+      //text_layer_set_text(s_time_until_layer, buffer);
+      char bu[8];
+      snprintf(bu, sizeof(bu), "%d:%d", hours_to, minutes_to);
+      APP_LOG(APP_LOG_LEVEL_INFO, bu);
+      snprintf(bu, sizeof(bu), "%d:%d", hour, minute);
+      APP_LOG(APP_LOG_LEVEL_INFO, bu);
+      snprintf(bu, sizeof(bu), "%d", diff);
+      APP_LOG(APP_LOG_LEVEL_INFO, bu);
+      snprintf(bu, sizeof(bu), "%dtest", 69);
+      text_layer_set_text(s_time_until_layer, bu);
+      //layer_set_hidden(s_time_until_layer, false);
+    }
+    else {
+      DictionaryIterator *iter;
+      app_message_outbox_begin(&iter);
+
+      // Add a key-value pair
+      dict_write_uint8(iter, 0, 0);
+
+      // Send the message!
+      app_message_outbox_send();
+      time_until_update();
+    }
+  }
+  }
+  else {
+    //layer_set_hidden(s_time_until_layer, true);
+  }
+
+  //layer_set_hidden(text_layer_get_layer(s_time_until_layer), diff == 0);
+  //APP_LOG(APP_LOG_LEVEL_INFO, buffer);
+}*/
+static void update_time_to(){
+  DictionaryIterator *iter;
+  app_message_outbox_begin(&iter);
+
+  // Add a key-value pair
+  dict_write_uint8(iter, 0, 0);
+
+  // Send the message!
+  app_message_outbox_send();
+}
+
+static int time_until_update(){
+  int result = -1;
+  if (hours_to >= 0 && minutes_to >= 0){
+    time_t temp = time(NULL);
+    struct tm *tick_time = localtime(&temp);
+    int temp_hour = tick_time->tm_hour;
+    int min = tick_time->tm_min;
+    while (temp_hour > 0){
+      min += 60;
+      temp_hour -= 1;
+    }
+    temp_hour = hours_to;
+    int minTo = minutes_to;
+    while (temp_hour > 0){
+      minTo += 60;
+      temp_hour -= 1;
+    }
+    char bu[8];
+    snprintf(bu, sizeof(bu), "%d", min);
+    APP_LOG(APP_LOG_LEVEL_INFO, bu);
+
+    snprintf(bu, sizeof(bu), "%d", minTo);
+    APP_LOG(APP_LOG_LEVEL_INFO, bu);
+    if (min <= minTo){
+      int diff = minTo - min;
+
+      snprintf(bu, sizeof(bu), "%d", diff);
+      APP_LOG(APP_LOG_LEVEL_INFO, bu);
+      result = diff;
+
+      //text_layer_set_text(s_time_until_layer, bu);
+    }
+    else {
+      update_time_to();
+      time_until_update();
+    }
+  }
+  return result;
 }
 
 static GPoint calcNew(){
@@ -342,19 +394,6 @@ static GPoint calcNew(){
   return (GPoint(0,0));
 }
 
-static GPoint calc(){
-  GPoint p = GPoint(cos((seconds * 6 -90)*DEG)*110+POS_X,sin((seconds*6-90)*DEG)*110+POS_Y);
-
-
-  //double k = p.y/p.x;
-
-  /*char buffer[256];
-  snprintf(buffer, sizeof(buffer), "Sekunde %d: y(x) = %d * x", seconds, (int)k);
-  APP_LOG(APP_LOG_LEVEL_INFO, buffer);*/
-
-  return p;
-}
-
 static int calcLen1(int seconds){
   int countPixels = seconds * 10.4;
   if (countPixels >= 72){
@@ -439,9 +478,6 @@ static void update_display_style1(Layer *layer, GContext *ctx){
 }
 
 static void update_time() {
-  char buffer[3];
-  snprintf(buffer, sizeof(buffer), "%d", secondsStyle);
-  APP_LOG(APP_LOG_LEVEL_INFO, buffer);
   // Get a tm structure
   time_t temp = time(NULL);
   struct tm *tick_time = localtime(&temp);
@@ -455,8 +491,20 @@ static void update_time() {
   // Display this time on the TextLayer
   text_layer_set_text(s_time_layer, s_buffer);
   text_layer_set_text(s_date_layer, s_date_buffer);
-  time_until_update();
-  //text_layer_set_text(s_time_until_layer, "test12");
+
+  if (tick_time->tm_min == 0 && tick_time->tm_hour == 0){
+    update_time_to();
+  }
+
+  int minutes = time_until_update();
+  static char bu[5];
+  if (minutes >= 0 && minutes <= 60){
+    snprintf(bu, sizeof(bu), "%d", minutes);
+  }
+  text_layer_set_text(s_time_until_layer, bu);
+  if (minutes == 0){
+    vibes_short_pulse();
+  }
 }
 
 static void update_style(){
@@ -580,6 +628,14 @@ static void main_window_load(Window *window){
   layer_set_hidden(layer, false);
   layer_add_child(window_layer, layer);
 
+  if (persist_read_int(KEY_SECONDS_STYLE)) {
+    secondsStyle = persist_read_int(KEY_SECONDS_STYLE);
+    char bu[10];
+    snprintf(bu, sizeof(bu), "%d", secondsStyle);
+    APP_LOG(APP_LOG_LEVEL_INFO, bu);
+  }
+
+  update_time_to();
   //Handlers
   update_style();
   tick_timer_service_subscribe(secondsStyle == 0 ? MINUTE_UNIT : SECOND_UNIT, tick_handler);
@@ -590,7 +646,6 @@ static void main_window_load(Window *window){
   bluetooth_handler(connection_service_peek_pebble_app_connection());
   battery_handler(battery_state_service_peek());
   update_time();
-  time_until_update();
 }
 
 static void main_window_unload(Window *window){

@@ -58,7 +58,8 @@
     "sdkVersion": "3",
     "shortName": "Watchface",
     "targetPlatforms": [
-        "basalt"
+        "basalt",
+        "aplite"
     ],
     "uuid": "7675abce-0f4f-4e40-91b5-576a420f2a3e",
     "versionLabel": "1.0",

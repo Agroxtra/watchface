@@ -9,6 +9,7 @@
 #define POS_Y 165/2
 #define DISTANCE 6
 #define RADIUS_SECONDS 5
+#define THICKNESS 5
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -101,36 +102,26 @@ static int time_until_update(){
   if (hours_to >= 0 && minutes_to >= 0){
     time_t temp = time(NULL);
     struct tm *tick_time = localtime(&temp);
-    int temp_hour = tick_time->tm_hour;
-    int min = tick_time->tm_min;
-    while (temp_hour > 0){
-      min += 60;
-      temp_hour -= 1;
-    }
-    temp_hour = hours_to;
-    int minTo = minutes_to;
-    while (temp_hour > 0){
-      minTo += 60;
-      temp_hour -= 1;
-    }
+    int min = tick_time->tm_min + (tick_time->tm_hour * 60);
+    int minTo = minutes_to + (hours_to*60);
     char bu[8];
     snprintf(bu, sizeof(bu), "%d", min);
     APP_LOG(APP_LOG_LEVEL_INFO, bu);
 
     snprintf(bu, sizeof(bu), "%d", minTo);
     APP_LOG(APP_LOG_LEVEL_INFO, bu);
-    if (min <= minTo){
+    if (min < minTo){
       int diff = minTo - min;
 
       snprintf(bu, sizeof(bu), "%d", diff);
       APP_LOG(APP_LOG_LEVEL_INFO, bu);
       result = diff;
-
-      //text_layer_set_text(s_time_until_layer, bu);
     }
     else {
+      hours_to = -1;
+      minutes_to = -1;
       update_time_to();
-      time_until_update();
+      return 0;
     }
   }
   return result;
@@ -389,15 +380,15 @@ static void update_display_style2(Layer *layer, GContext *ctx){
 
 
   //len1 upper right streak
-  graphics_fill_rect(ctx, GRect(72, 0, len1, 3), 0, 0);
+  graphics_fill_rect(ctx, GRect(72, 0, len1, THICKNESS), 0, 0);
   //len2 right streak
-  graphics_fill_rect(ctx, GRect(144 - 3, 0, 3, len2), 0, 0);
+  graphics_fill_rect(ctx, GRect(144 - THICKNESS, 0, THICKNESS, len2), 0, 0);
   //len3 lower streak
-  graphics_fill_rect(ctx, GRect(144 - len3, 168 - 3, len3, 3), 0, 0);
+  graphics_fill_rect(ctx, GRect(144 - len3, 168 - THICKNESS, len3, THICKNESS), 0, 0);
   //len4 left streak
-  graphics_fill_rect(ctx, GRect(0, 168 - len4, 3, len4), 0, 0);
+  graphics_fill_rect(ctx, GRect(0, 168 - len4, THICKNESS, len4), 0, 0);
   //len5 upper left streak
-  graphics_fill_rect(ctx, GRect(0, 0, len5, 3), 0, 0);
+  graphics_fill_rect(ctx, GRect(0, 0, len5, THICKNESS), 0, 0);
 }
 
 static void update_display_style1(Layer *layer, GContext *ctx){

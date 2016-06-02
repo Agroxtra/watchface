@@ -1144,7 +1144,7 @@ LOAD /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none
  .note.gnu.build-id
                 0x0000000000000084       0x24 linker stubs
 
-.text           0x00000000000000a8     0x1921
+.text           0x00000000000000a8     0x1958
  *(.text)
  .text          0x00000000000000a8       0x14 /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
  .text          0x00000000000000bc      0x370 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
@@ -1185,279 +1185,280 @@ LOAD /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none
  .text.update_time_to
                 0x0000000000000bf8       0x18 src/watchface.c.14.o
  .text.update_time
-                0x0000000000000c10      0x184 src/watchface.c.14.o
+                0x0000000000000c10      0x1b8 src/watchface.c.14.o
  .text.main_window_unload
-                0x0000000000000d94       0xa0 src/watchface.c.14.o
- *fill*         0x0000000000000e34        0x4 
+                0x0000000000000dc8       0xa0 src/watchface.c.14.o
  .text.calcLen2
-                0x0000000000000e38       0x48 src/watchface.c.14.o
+                0x0000000000000e68       0x48 src/watchface.c.14.o
  .text.update_style
-                0x0000000000000e80       0x4c src/watchface.c.14.o
+                0x0000000000000eb0       0x4c src/watchface.c.14.o
  .text.inbox_received_callback
-                0x0000000000000ecc      0x12c src/watchface.c.14.o
+                0x0000000000000efc      0x12c src/watchface.c.14.o
  .text.tick_handler
-                0x0000000000000ff8       0x50 src/watchface.c.14.o
+                0x0000000000001028       0x50 src/watchface.c.14.o
  .text.bluetooth_handler
-                0x0000000000001048       0x44 src/watchface.c.14.o
+                0x0000000000001078       0x44 src/watchface.c.14.o
  .text.main_window_load
-                0x000000000000108c      0x398 src/watchface.c.14.o
- *fill*         0x0000000000001424        0x4 
+                0x00000000000010bc      0x398 src/watchface.c.14.o
+ *fill*         0x0000000000001454        0x4 
  .text.calcLen4
-                0x0000000000001428       0x70 src/watchface.c.14.o
+                0x0000000000001458       0x70 src/watchface.c.14.o
  .text.update_display_style2
-                0x0000000000001498      0x188 src/watchface.c.14.o
+                0x00000000000014c8      0x188 src/watchface.c.14.o
  .text.startup.main
-                0x0000000000001620       0x90 src/watchface.c.14.o
-                0x0000000000001620                main
+                0x0000000000001650       0x90 src/watchface.c.14.o
+                0x0000000000001650                main
  .text.app_event_loop
-                0x00000000000016b0        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000016b0                app_event_loop
- .text.app_log  0x00000000000016bc        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000016bc                app_log
- .text.app_message_open
-                0x00000000000016c8        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000016c8                app_message_open
- .text.battery_state_service_peek
-                0x00000000000016d4        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000016d4                battery_state_service_peek
- .text.battery_state_service_subscribe
                 0x00000000000016e0        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000016e0                battery_state_service_subscribe
- .text.battery_state_service_unsubscribe
-                0x00000000000016ec        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000016ec                battery_state_service_unsubscribe
- .text.clock_is_24h_style
+                0x00000000000016e0                app_event_loop
+ .text.app_log  0x00000000000016ec        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
+                0x00000000000016ec                app_log
+ .text.app_message_open
                 0x00000000000016f8        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000016f8                clock_is_24h_style
- .text.dict_find
+                0x00000000000016f8                app_message_open
+ .text.battery_state_service_peek
                 0x0000000000001704        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001704                dict_find
- .text.dict_write_uint8
+                0x0000000000001704                battery_state_service_peek
+ .text.battery_state_service_subscribe
                 0x0000000000001710        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001710                dict_write_uint8
- .text.fonts_load_custom_font
+                0x0000000000001710                battery_state_service_subscribe
+ .text.battery_state_service_unsubscribe
                 0x000000000000171c        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x000000000000171c                fonts_load_custom_font
- .text.fonts_unload_custom_font
+                0x000000000000171c                battery_state_service_unsubscribe
+ .text.clock_is_24h_style
                 0x0000000000001728        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001728                fonts_unload_custom_font
- .text.graphics_fill_circle
+                0x0000000000001728                clock_is_24h_style
+ .text.dict_find
                 0x0000000000001734        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001734                graphics_fill_circle
- .text.graphics_fill_rect
+                0x0000000000001734                dict_find
+ .text.dict_write_uint8
                 0x0000000000001740        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001740                graphics_fill_rect
- .text.layer_add_child
+                0x0000000000001740                dict_write_uint8
+ .text.fonts_load_custom_font
                 0x000000000000174c        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x000000000000174c                layer_add_child
- .text.layer_create
+                0x000000000000174c                fonts_load_custom_font
+ .text.fonts_unload_custom_font
                 0x0000000000001758        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001758                layer_create
- .text.layer_get_bounds
+                0x0000000000001758                fonts_unload_custom_font
+ .text.graphics_fill_circle
                 0x0000000000001764        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001764                layer_get_bounds
- .text.layer_mark_dirty
+                0x0000000000001764                graphics_fill_circle
+ .text.graphics_fill_rect
                 0x0000000000001770        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001770                layer_mark_dirty
- .text.layer_set_hidden
+                0x0000000000001770                graphics_fill_rect
+ .text.layer_add_child
                 0x000000000000177c        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x000000000000177c                layer_set_hidden
- .text.layer_set_update_proc
+                0x000000000000177c                layer_add_child
+ .text.layer_create
                 0x0000000000001788        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001788                layer_set_update_proc
- .text.memset   0x0000000000001794        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001794                memset
- .text.persist_read_int
+                0x0000000000001788                layer_create
+ .text.layer_get_bounds
+                0x0000000000001794        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
+                0x0000000000001794                layer_get_bounds
+ .text.layer_mark_dirty
                 0x00000000000017a0        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000017a0                persist_read_int
- .text.persist_write_int
+                0x00000000000017a0                layer_mark_dirty
+ .text.layer_set_hidden
                 0x00000000000017ac        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000017ac                persist_write_int
- .text.resource_get_handle
+                0x00000000000017ac                layer_set_hidden
+ .text.layer_set_update_proc
                 0x00000000000017b8        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000017b8                resource_get_handle
- .text.snprintf
-                0x00000000000017c4        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000017c4                snprintf
- .text.strftime
+                0x00000000000017b8                layer_set_update_proc
+ .text.memset   0x00000000000017c4        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
+                0x00000000000017c4                memset
+ .text.persist_read_int
                 0x00000000000017d0        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000017d0                strftime
- .text.tick_timer_service_subscribe
+                0x00000000000017d0                persist_read_int
+ .text.persist_write_int
                 0x00000000000017dc        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000017dc                tick_timer_service_subscribe
- .text.tick_timer_service_unsubscribe
+                0x00000000000017dc                persist_write_int
+ .text.resource_get_handle
                 0x00000000000017e8        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000017e8                tick_timer_service_unsubscribe
- .text.vibes_short_pulse
+                0x00000000000017e8                resource_get_handle
+ .text.snprintf
                 0x00000000000017f4        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000017f4                vibes_short_pulse
- .text.window_create
+                0x00000000000017f4                snprintf
+ .text.strftime
                 0x0000000000001800        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001800                window_create
- .text.window_destroy
+                0x0000000000001800                strftime
+ .text.tick_timer_service_subscribe
                 0x000000000000180c        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x000000000000180c                window_destroy
- .text.window_get_root_layer
+                0x000000000000180c                tick_timer_service_subscribe
+ .text.tick_timer_service_unsubscribe
                 0x0000000000001818        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001818                window_get_root_layer
- .text.window_set_window_handlers
+                0x0000000000001818                tick_timer_service_unsubscribe
+ .text.vibes_short_pulse
                 0x0000000000001824        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001824                window_set_window_handlers
- .text.window_stack_push
+                0x0000000000001824                vibes_short_pulse
+ .text.window_create
                 0x0000000000001830        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001830                window_stack_push
- .text.app_message_outbox_begin
+                0x0000000000001830                window_create
+ .text.window_destroy
                 0x000000000000183c        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x000000000000183c                app_message_outbox_begin
- .text.app_message_outbox_send
+                0x000000000000183c                window_destroy
+ .text.window_get_root_layer
                 0x0000000000001848        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001848                app_message_outbox_send
- .text.app_message_register_inbox_dropped
+                0x0000000000001848                window_get_root_layer
+ .text.window_set_window_handlers
                 0x0000000000001854        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001854                app_message_register_inbox_dropped
- .text.app_message_register_inbox_received
+                0x0000000000001854                window_set_window_handlers
+ .text.window_stack_push
                 0x0000000000001860        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001860                app_message_register_inbox_received
- .text.app_message_register_outbox_failed
+                0x0000000000001860                window_stack_push
+ .text.app_message_outbox_begin
                 0x000000000000186c        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x000000000000186c                app_message_register_outbox_failed
- .text.app_message_register_outbox_sent
+                0x000000000000186c                app_message_outbox_begin
+ .text.app_message_outbox_send
                 0x0000000000001878        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001878                app_message_register_outbox_sent
- .text.graphics_context_set_fill_color
+                0x0000000000001878                app_message_outbox_send
+ .text.app_message_register_inbox_dropped
                 0x0000000000001884        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001884                graphics_context_set_fill_color
- .text.window_set_background_color
+                0x0000000000001884                app_message_register_inbox_dropped
+ .text.app_message_register_inbox_received
                 0x0000000000001890        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001890                window_set_background_color
- .text.localtime
+                0x0000000000001890                app_message_register_inbox_received
+ .text.app_message_register_outbox_failed
                 0x000000000000189c        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x000000000000189c                localtime
- .text.text_layer_create
+                0x000000000000189c                app_message_register_outbox_failed
+ .text.app_message_register_outbox_sent
                 0x00000000000018a8        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000018a8                text_layer_create
- .text.text_layer_destroy
+                0x00000000000018a8                app_message_register_outbox_sent
+ .text.graphics_context_set_fill_color
                 0x00000000000018b4        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000018b4                text_layer_destroy
- .text.text_layer_get_layer
+                0x00000000000018b4                graphics_context_set_fill_color
+ .text.window_set_background_color
                 0x00000000000018c0        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000018c0                text_layer_get_layer
- .text.text_layer_set_background_color
+                0x00000000000018c0                window_set_background_color
+ .text.localtime
                 0x00000000000018cc        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000018cc                text_layer_set_background_color
- .text.text_layer_set_font
+                0x00000000000018cc                localtime
+ .text.text_layer_create
                 0x00000000000018d8        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000018d8                text_layer_set_font
- .text.text_layer_set_text
+                0x00000000000018d8                text_layer_create
+ .text.text_layer_destroy
                 0x00000000000018e4        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000018e4                text_layer_set_text
- .text.text_layer_set_text_alignment
+                0x00000000000018e4                text_layer_destroy
+ .text.text_layer_get_layer
                 0x00000000000018f0        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000018f0                text_layer_set_text_alignment
- .text.text_layer_set_text_color
+                0x00000000000018f0                text_layer_get_layer
+ .text.text_layer_set_background_color
                 0x00000000000018fc        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x00000000000018fc                text_layer_set_text_color
- .text.time     0x0000000000001908        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001908                time
- .text.connection_service_peek_pebble_app_connection
+                0x00000000000018fc                text_layer_set_background_color
+ .text.text_layer_set_font
+                0x0000000000001908        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
+                0x0000000000001908                text_layer_set_font
+ .text.text_layer_set_text
                 0x0000000000001914        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001914                connection_service_peek_pebble_app_connection
- .text.connection_service_subscribe
+                0x0000000000001914                text_layer_set_text
+ .text.text_layer_set_text_alignment
                 0x0000000000001920        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x0000000000001920                connection_service_subscribe
- .text.connection_service_unsubscribe
+                0x0000000000001920                text_layer_set_text_alignment
+ .text.text_layer_set_text_color
                 0x000000000000192c        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
-                0x000000000000192c                connection_service_unsubscribe
+                0x000000000000192c                text_layer_set_text_color
+ .text.time     0x0000000000001938        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
+                0x0000000000001938                time
+ .text.connection_service_peek_pebble_app_connection
+                0x0000000000001944        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
+                0x0000000000001944                connection_service_peek_pebble_app_connection
+ .text.connection_service_subscribe
+                0x0000000000001950        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
+                0x0000000000001950                connection_service_subscribe
+ .text.connection_service_unsubscribe
+                0x000000000000195c        0xc /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
+                0x000000000000195c                connection_service_unsubscribe
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x0000000000001938       0x91 src/watchface.c.14.o
-                                         0x94 (size before relaxing)
+                0x0000000000001968       0x98 src/watchface.c.14.o
+                                         0x9b (size before relaxing)
 
-.glue_7         0x00000000000019cc        0x0
+.glue_7         0x0000000000001a00        0x0
  .glue_7        0x0000000000000000        0x0 linker stubs
 
-.glue_7t        0x00000000000019cc        0x0
+.glue_7t        0x0000000000001a00        0x0
  .glue_7t       0x0000000000000000        0x0 linker stubs
 
-.vfp11_veneer   0x00000000000019cc        0x0
+.vfp11_veneer   0x0000000000001a00        0x0
  .vfp11_veneer  0x0000000000000000        0x0 linker stubs
 
-.v4_bx          0x00000000000019cc        0x0
+.v4_bx          0x0000000000001a00        0x0
  .v4_bx         0x0000000000000000        0x0 linker stubs
 
-.iplt           0x00000000000019cc        0x0
+.iplt           0x0000000000001a00        0x0
  .iplt          0x0000000000000000        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.rel.dyn        0x00000000000019cc        0x0
+.rel.dyn        0x0000000000001a00        0x0
  .rel.iplt      0x0000000000000000        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.data           0x00000000000019cc       0x10
+.data           0x0000000000001a00       0x18
  *(.data)
- .data          0x00000000000019cc        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crti.o
- .data          0x00000000000019cc        0x4 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
-                0x00000000000019cc                __dso_handle
- .data          0x00000000000019d0        0x0 src/watchface.c.14.o
- .data          0x00000000000019d0        0x0 aplite/appinfo.auto.c.14.o
- .data          0x00000000000019d0        0x0 /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
- .data          0x00000000000019d0        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
- .data          0x00000000000019d0        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
- .data          0x00000000000019d0        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
- .data          0x00000000000019d0        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
- .data          0x00000000000019d0        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtn.o
+ .data          0x0000000000001a00        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crti.o
+ .data          0x0000000000001a00        0x4 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
+                0x0000000000001a00                __dso_handle
+ .data          0x0000000000001a04        0x0 src/watchface.c.14.o
+ .data          0x0000000000001a04        0x0 aplite/appinfo.auto.c.14.o
+ .data          0x0000000000001a04        0x0 /Users/Martin/Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp1DSiDppebble.o)
+ .data          0x0000000000001a04        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
+ .data          0x0000000000001a04        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
+ .data          0x0000000000001a04        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
+ .data          0x0000000000001a04        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
+ .data          0x0000000000001a04        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtn.o
  *(.data.*)
+ .data.diffOld  0x0000000000001a04        0x4 src/watchface.c.14.o
+ .data.diff     0x0000000000001a08        0x4 src/watchface.c.14.o
  .data.secondsStyle
-                0x00000000000019d0        0x4 src/watchface.c.14.o
+                0x0000000000001a0c        0x4 src/watchface.c.14.o
  .data.minutes_to
-                0x00000000000019d4        0x4 src/watchface.c.14.o
+                0x0000000000001a10        0x4 src/watchface.c.14.o
  .data.hours_to
-                0x00000000000019d8        0x4 src/watchface.c.14.o
+                0x0000000000001a14        0x4 src/watchface.c.14.o
 
-.igot.plt       0x00000000000019dc        0x0
+.igot.plt       0x0000000000001a18        0x0
  .igot.plt      0x0000000000000000        0x0 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.bss            0x00000000000019dc       0x9e
+.bss            0x0000000000001a18       0xa0
  *(.bss)
  *(.bss.*)
+ .bss.s_date_buffer.7572
+                0x0000000000001a18        0xc src/watchface.c.14.o
  .bss.s_time_font
-                0x00000000000019dc        0x4 src/watchface.c.14.o
- .bss.s_con_layer
-                0x00000000000019e0        0x4 src/watchface.c.14.o
- .bss.layer     0x00000000000019e4        0x4 src/watchface.c.14.o
- .bss.s_date_buffer.7570
-                0x00000000000019e8        0xc src/watchface.c.14.o
- .bss.temperature_buffer.7430
-                0x00000000000019f4        0x8 src/watchface.c.14.o
- .bss.s_con_font
-                0x00000000000019fc        0x4 src/watchface.c.14.o
- .bss.s_time_until_font
-                0x0000000000001a00        0x4 src/watchface.c.14.o
- .bss.bu.7572   0x0000000000001a04        0x5 src/watchface.c.14.o
- *fill*         0x0000000000001a09        0x3 
- .bss.s_main_window
-                0x0000000000001a0c        0x4 src/watchface.c.14.o
+                0x0000000000001a24        0x4 src/watchface.c.14.o
  .bss.s_weather_layer
-                0x0000000000001a10        0x4 src/watchface.c.14.o
- .bss.s_time_layer
-                0x0000000000001a14        0x4 src/watchface.c.14.o
- .bss.s_date_layer
-                0x0000000000001a18        0x4 src/watchface.c.14.o
- .bss.conditions_buffer.7431
-                0x0000000000001a1c       0x20 src/watchface.c.14.o
- .bss.s_weather_font
-                0x0000000000001a3c        0x4 src/watchface.c.14.o
- .bss.secondsColor
-                0x0000000000001a40        0x1 src/watchface.c.14.o
- *fill*         0x0000000000001a41        0x3 
- .bss.s_date_font
-                0x0000000000001a44        0x4 src/watchface.c.14.o
- .bss.s_time_until_layer
+                0x0000000000001a28        0x4 src/watchface.c.14.o
+ .bss.bu.7573   0x0000000000001a2c        0x8 src/watchface.c.14.o
+ .bss.s_con_font
+                0x0000000000001a34        0x4 src/watchface.c.14.o
+ .bss.temperature_buffer.7432
+                0x0000000000001a38        0x8 src/watchface.c.14.o
+ .bss.s_time_until_font
+                0x0000000000001a40        0x4 src/watchface.c.14.o
+ .bss.layer     0x0000000000001a44        0x4 src/watchface.c.14.o
+ .bss.s_main_window
                 0x0000000000001a48        0x4 src/watchface.c.14.o
- .bss.seconds   0x0000000000001a4c        0x4 src/watchface.c.14.o
- .bss.s_buffer.7569
-                0x0000000000001a50        0xa src/watchface.c.14.o
- .bss.weather_layer_buffer.7432
-                0x0000000000001a5a       0x20 src/watchface.c.14.o
+ .bss.s_time_layer
+                0x0000000000001a4c        0x4 src/watchface.c.14.o
+ .bss.weather_layer_buffer.7434
+                0x0000000000001a50       0x20 src/watchface.c.14.o
+ .bss.s_date_layer
+                0x0000000000001a70        0x4 src/watchface.c.14.o
+ .bss.s_con_layer
+                0x0000000000001a74        0x4 src/watchface.c.14.o
+ .bss.s_weather_font
+                0x0000000000001a78        0x4 src/watchface.c.14.o
+ .bss.secondsColor
+                0x0000000000001a7c        0x1 src/watchface.c.14.o
+ *fill*         0x0000000000001a7d        0x3 
+ .bss.s_date_font
+                0x0000000000001a80        0x4 src/watchface.c.14.o
+ .bss.s_time_until_layer
+                0x0000000000001a84        0x4 src/watchface.c.14.o
+ .bss.s_buffer.7571
+                0x0000000000001a88        0xa src/watchface.c.14.o
+ *fill*         0x0000000000001a92        0x2 
+ .bss.seconds   0x0000000000001a94        0x4 src/watchface.c.14.o
+ .bss.conditions_buffer.7433
+                0x0000000000001a98       0x20 src/watchface.c.14.o
 
 DISCARD
  libc.a(*)
@@ -1496,12 +1497,12 @@ OUTPUT(/Users/Martin/Desktop/Desktop/pebble/watchface_old/watchface/build/aplite
  .comment       0x0000000000000000       0x4f aplite/appinfo.auto.c.14.o
  .comment       0x0000000000000000       0x4f /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
 
-.debug_info     0x0000000000000000     0x2868
- .debug_info    0x0000000000000000     0x22cd src/watchface.c.14.o
- .debug_info    0x00000000000022cd      0x370 aplite/appinfo.auto.c.14.o
- .debug_info    0x000000000000263d       0xb9 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
- .debug_info    0x00000000000026f6       0xb9 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
- .debug_info    0x00000000000027af       0xb9 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
+.debug_info     0x0000000000000000     0x2870
+ .debug_info    0x0000000000000000     0x22d5 src/watchface.c.14.o
+ .debug_info    0x00000000000022d5      0x370 aplite/appinfo.auto.c.14.o
+ .debug_info    0x0000000000002645       0xb9 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
+ .debug_info    0x00000000000026fe       0xb9 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
+ .debug_info    0x00000000000027b7       0xb9 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
 
 .debug_abbrev   0x0000000000000000      0x565
  .debug_abbrev  0x0000000000000000      0x48b src/watchface.c.14.o
@@ -1510,8 +1511,8 @@ OUTPUT(/Users/Martin/Desktop/Desktop/pebble/watchface_old/watchface/build/aplite
  .debug_abbrev  0x000000000000053d       0x14 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
  .debug_abbrev  0x0000000000000551       0x14 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
 
-.debug_loc      0x0000000000000000      0x81c
- .debug_loc     0x0000000000000000      0x81c src/watchface.c.14.o
+.debug_loc      0x0000000000000000      0x811
+ .debug_loc     0x0000000000000000      0x811 src/watchface.c.14.o
 
 .debug_aranges  0x0000000000000000      0x118
  .debug_aranges
@@ -1525,15 +1526,15 @@ OUTPUT(/Users/Martin/Desktop/Desktop/pebble/watchface_old/watchface/build/aplite
  .debug_aranges
                 0x00000000000000f8       0x20 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
 
-.debug_ranges   0x0000000000000000      0x150
- .debug_ranges  0x0000000000000000      0x150 src/watchface.c.14.o
+.debug_ranges   0x0000000000000000      0x148
+ .debug_ranges  0x0000000000000000      0x148 src/watchface.c.14.o
 
-.debug_line     0x0000000000000000      0xbd0
- .debug_line    0x0000000000000000      0x5c3 src/watchface.c.14.o
- .debug_line    0x00000000000005c3      0x157 aplite/appinfo.auto.c.14.o
- .debug_line    0x000000000000071a      0x20a /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
- .debug_line    0x0000000000000924      0x226 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
- .debug_line    0x0000000000000b4a       0x86 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
+.debug_line     0x0000000000000000      0xbe5
+ .debug_line    0x0000000000000000      0x5d8 src/watchface.c.14.o
+ .debug_line    0x00000000000005d8      0x157 aplite/appinfo.auto.c.14.o
+ .debug_line    0x000000000000072f      0x20a /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
+ .debug_line    0x0000000000000939      0x226 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
+ .debug_line    0x0000000000000b5f       0x86 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
 
 .debug_str      0x0000000000000000     0x129e
  .debug_str     0x0000000000000000     0x1085 src/watchface.c.14.o

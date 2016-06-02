@@ -9,7 +9,7 @@
 #define POS_Y 165/2
 #define DISTANCE 6
 #define RADIUS_SECONDS 5
-#define THICKNESS 5
+#define THICKNESS 4
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -17,19 +17,19 @@ static TextLayer *s_weather_layer;
 static TextLayer *s_con_layer;
 static TextLayer *s_date_layer;
 static TextLayer *s_time_until_layer;
-//static TextLayer *s_seconds_layer;
 static GFont s_time_font;
 static GFont s_weather_font;
 static GFont s_con_font;
 static GFont s_date_font;
 static GFont s_time_until_font;
-//static GFont s_seconds_font;
 static int seconds = 0;
 static GColor secondsColor;
 static Layer *layer;
 static int secondsStyle = 2;
 static int hours_to = -1;
 static int minutes_to = -1;
+static int diff = -1;
+static int diffOld = -1;
 
 
 static void update_display_style1(Layer *layer, GContext *ctx);
@@ -415,13 +415,15 @@ static void update_time() {
     update_time_to();
   }
 
-  int minutes = time_until_update();
-  static char bu[5];
-  if (minutes >= 0 && minutes <= 60){
-    snprintf(bu, sizeof(bu), "%d", minutes);
+  diffOld = diff;
+  diff = time_until_update();
+
+  static char bu[8];
+  if (diff >= 0 && diff <= 60 && diffOld != diff){
+    snprintf(bu, sizeof(bu), "%d min", diff);
   }
   text_layer_set_text(s_time_until_layer, bu);
-  if (minutes == 0){
+  if (diff == 0){
     vibes_short_pulse();
   }
 }

@@ -337,6 +337,7 @@ var xhrRequest = function (url, type, callback) {
 var style = 0;
 var user;
 var pwd;
+var school;
 
 /**
  * Created by eliaslipp on 03.05.16.
@@ -454,7 +455,12 @@ function init(user, password, school) {
             date += '0' + ((new Date()).getMonth() + 1);
         else
             date += ((new Date()).getMonth() + 1);
-        date += (new Date()).getDate();
+
+        if ((new Date()).getDate() < 10)
+            date += '0' + (new Date()).getDate();
+        else
+            date += (new Date()).getDate();
+
         return date;
     }
 
@@ -480,6 +486,13 @@ function init(user, password, school) {
                                 subjects[i].eliasText = " (sub)";
                                 k.push(subjects[i]);
                                 bool = true;
+                            }
+                            break;
+                        case "shift":
+                            if (!contains(subjects[i], k)){
+                              subs[j].eliasText = "";
+                              k.push(subs[j]);
+                              bool = true;
                             }
                             break;
                     }
@@ -551,7 +564,7 @@ function differenceOfTime(time1, time2) {
 }
 
 function getUntil(){
-  var list = init(localStorage.KEY_UNTIS_USER, localStorage.KEY_UNTIS_PWD, "htlwrn");
+  var list = init(localStorage.KEY_UNTIS_USER, localStorage.KEY_UNTIS_PWD, localStorage.KEY_UNTIS_SCHOOL);
   var time = getTime();
   var subject;
   for (var i = 0; i < list.length; i++) {
@@ -561,8 +574,6 @@ function getUntil(){
           subject.endMinutes = convertToTime(list[i].endTime, "m");
           subject.startHours = convertToTime(list[i].startTime, "h");
           subject.startMinutes = convertToTime(list[i].startTime, "m");
-          //var diffTime = differenceOfTime(list[i].endTime, time);
-          //subject.free = diffTime > 50;
           break;
       }
   }
@@ -659,7 +670,6 @@ function getWeather() {
 // Listen for when the watchface is opened
 Pebble.addEventListener('ready',
   function(e) {
-    //console.log('PebbleKit JS ready!');
     getWeather();
   }
 );
@@ -667,7 +677,6 @@ Pebble.addEventListener('ready',
 // Listen for when an AppMessage is received
 Pebble.addEventListener('appmessage',
   function(e) {
-    //console.log('AppMessage received!');
     getWeather();
   }
 );
@@ -695,8 +704,11 @@ Pebble.addEventListener("webviewclosed",
 
     user = configuration.KEY_UNTIS_USER;
     pwd = configuration.KEY_UNTIS_PWD;
+    school = configuration.KEY_UNTIS_SCHOOL;
     localStorage.KEY_UNTIS_USER = user;
     localStorage.KEY_UNTIS_PWD = pwd;
+    localStorage.KEY_UNTIS_SCHOOL = school;
+
 
     //console.log(localStorage.KEY_UNTIS_USER + ' ' + localStorage.KEY_UNTIS_PWD);
 

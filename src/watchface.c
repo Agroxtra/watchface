@@ -110,7 +110,7 @@ static int time_until_update(){
 
     snprintf(bu, sizeof(bu), "%d", minTo);
     APP_LOG(APP_LOG_LEVEL_INFO, bu);
-    if (min < minTo){
+    if (min <= minTo){
       int diff = minTo - min;
 
       snprintf(bu, sizeof(bu), "%d", diff);
@@ -121,7 +121,7 @@ static int time_until_update(){
       hours_to = -1;
       minutes_to = -1;
       update_time_to();
-      return 0;
+      return -1;
     }
   }
   return result;

@@ -1185,9 +1185,10 @@ LOAD /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none
  .text.update_time_to
                 0x0000000000000bf8       0x18 src/watchface.c.14.o
  .text.update_time
-                0x0000000000000c10      0x1b8 src/watchface.c.14.o
+                0x0000000000000c10      0x1b4 src/watchface.c.14.o
  .text.main_window_unload
-                0x0000000000000dc8       0xa0 src/watchface.c.14.o
+                0x0000000000000dc4       0xa0 src/watchface.c.14.o
+ *fill*         0x0000000000000e64        0x4 
  .text.calcLen2
                 0x0000000000000e68       0x48 src/watchface.c.14.o
  .text.update_style
@@ -1529,12 +1530,12 @@ OUTPUT(/Users/Martin/Desktop/Desktop/pebble/watchface_old/watchface/build/aplite
 .debug_ranges   0x0000000000000000      0x148
  .debug_ranges  0x0000000000000000      0x148 src/watchface.c.14.o
 
-.debug_line     0x0000000000000000      0xbe5
- .debug_line    0x0000000000000000      0x5d8 src/watchface.c.14.o
- .debug_line    0x00000000000005d8      0x157 aplite/appinfo.auto.c.14.o
- .debug_line    0x000000000000072f      0x20a /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
- .debug_line    0x0000000000000939      0x226 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
- .debug_line    0x0000000000000b5f       0x86 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
+.debug_line     0x0000000000000000      0xbe4
+ .debug_line    0x0000000000000000      0x5d7 src/watchface.c.14.o
+ .debug_line    0x00000000000005d7      0x157 aplite/appinfo.auto.c.14.o
+ .debug_line    0x000000000000072e      0x20a /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
+ .debug_line    0x0000000000000938      0x226 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
+ .debug_line    0x0000000000000b5e       0x86 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
 
 .debug_str      0x0000000000000000     0x129e
  .debug_str     0x0000000000000000     0x1085 src/watchface.c.14.o

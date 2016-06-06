@@ -1537,11 +1537,11 @@ OUTPUT(/Users/Martin/Desktop/Desktop/pebble/watchface_old/watchface/build/aplite
  .debug_line    0x0000000000000938      0x226 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
  .debug_line    0x0000000000000b5e       0x86 /usr/local/Cellar/pebble-toolchain/2.0/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
 
-.debug_str      0x0000000000000000     0x129e
- .debug_str     0x0000000000000000     0x1085 src/watchface.c.14.o
-                                       0x114a (size before relaxing)
- .debug_str     0x0000000000001085      0x219 aplite/appinfo.auto.c.14.o
-                                        0x4a8 (size before relaxing)
+.debug_str      0x0000000000000000     0x12a2
+ .debug_str     0x0000000000000000     0x1089 src/watchface.c.14.o
+                                       0x114e (size before relaxing)
+ .debug_str     0x0000000000001089      0x219 aplite/appinfo.auto.c.14.o
+                                        0x4ac (size before relaxing)
 
 .debug_frame    0x0000000000000000      0x1e0
  .debug_frame   0x0000000000000000      0x1e0 src/watchface.c.14.o

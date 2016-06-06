@@ -495,7 +495,7 @@ static void main_window_load(Window *window){
   secondsColor = GColorRed;
 
   s_weather_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));
-  s_time_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_48));
+  s_time_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ORBITRON_44));
   s_con_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_8));
   s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_24));
   s_time_until_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));

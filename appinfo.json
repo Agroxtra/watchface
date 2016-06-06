@@ -36,20 +36,20 @@
                 "type": "font"
             },
             {
-                "file": "fonts/SecondsFont",
-                "name": "FONT_POPPINS_18",
-                "targetPlatforms": null,
-                "type": "font"
-            },
-            {
-                "file": "fonts/TimeFont",
-                "name": "FONT_POPPINS_48",
+                "file": "fonts/Orbitron-Regular.ttf",
+                "name": "FONT_ORBITRON_44",
                 "targetPlatforms": null,
                 "type": "font"
             },
             {
                 "file": "fonts/WeatherFont",
                 "name": "FONT_POPPINS_20",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "file": "fonts/Orbitron-Regular.ttf",
+                "name": "FONT_ORBITRON_20",
                 "targetPlatforms": null,
                 "type": "font"
             }

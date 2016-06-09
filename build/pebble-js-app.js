@@ -6,12 +6,28 @@ loader.packages = {};
 
 loader.packagesLinenoOrder = [{ filename: 'loader.js', lineno: 0 }];
 
-loader.extpaths = ['?', '?.js', '?.json', '?/index.js'];
-
-loader.paths = ['/', 'src'];
+loader.fileExts = ['?', '?.js', '?.json'];
+loader.folderExts = ['?/index.js', '?/index.json'];
+loader.builtins = ['safe'];
 
 loader.basepath = function(path) {
   return path.replace(/[^\/]*$/, '');
+};
+
+loader.joinpath = function() {
+  var result = arguments[0];
+  for (var i = 1; i < arguments.length; ++i) {
+    if (arguments[i][0] === '/') {
+      result = arguments[i];
+    } else {
+      result += '/' + arguments[i];
+    }
+  }
+
+  if (result[0] === '/') {
+    result = result.substr(1);
+  }
+  return result;
 };
 
 var replace = function(a, regexp, b) {
@@ -25,15 +41,12 @@ var replace = function(a, regexp, b) {
 loader.normalize = function(path) {
   path = replace(path, /(?:(^|\/)\.?\/)+/g, '$1');
   path = replace(path, /[^\/]*\/\.\.\//, '');
+  path = path.replace(/\/\/+/g, '/');
+  path = path.replace(/^\//, '');
   return path;
 };
 
-loader.require = function(path, requirer) {
-  var module = loader.getPackage(path, requirer);
-  if (!module) {
-    throw new Error("Cannot find module '" + path + "'");
-  }
-
+function _require(module) {
   if (module.exports) {
     return module.exports;
   }
@@ -45,6 +58,15 @@ loader.require = function(path, requirer) {
   module.loaded = true;
 
   return module.exports;
+}
+
+loader.require = function(path, requirer) {
+  var module = loader.getPackage(path, requirer);
+  if (!module) {
+    throw new Error("Cannot find module '" + path + "'");
+  }
+
+  return _require(module);
 };
 
 var compareLineno = function(a, b) { return a.lineno - b.lineno; };
@@ -61,34 +83,82 @@ loader.define = function(path, lineno, loadfun) {
   loader.packagesLinenoOrder.sort(compareLineno);
 };
 
+loader.getPackageForPath = function(path) {
+  return loader.getPackageForFile(path) || loader.getPackageForDirectory(path);
+};
+
 loader.getPackage = function(path, requirer) {
   var module;
-  if (requirer) {
-    module = loader.getPackageAtPath(loader.basepath(requirer.filename) + '/' + path);
+  var fullPath;
+  if (requirer && requirer.filename) {
+    fullPath = loader.joinpath(loader.basepath(requirer.filename), path);
+  } else {
+    fullPath = path;
+  }
+
+  if (loader.builtins.indexOf(path) !== -1) {
+    return loader.packages[path];
+  }
+
+  // Try loading the module from a path, if it is trying to load from a path.
+  if (path.substr(0, 2) === './' || path.substr(0, 1) === '/' || path.substr(0, 3) === '../') {
+    module = loader.getPackageForPath(fullPath);
   }
 
   if (!module) {
-    module = loader.getPackageAtPath(path);
+    module = loader.getPackageFromBuildOutput(path);
   }
 
-  var paths = loader.paths;
-  for (var i = 0, ii = paths.length; !module && i < ii; ++i) {
-    var dirpath = paths[i];
-    module = loader.getPackageAtPath(dirpath + '/' + path);
+  if (!module) {
+    module = loader.getPackageForNodeModule(path);
   }
+
   return module;
 };
 
-loader.getPackageAtPath = function(path) {
+loader.getPackageForFile = function(path) {
   path = loader.normalize(path);
 
   var module;
-  var extpaths = loader.extpaths;
-  for (var i = 0, ii = extpaths.length; !module && i < ii; ++i) {
-    var filepath = extpaths[i].replace('?', path);
+  var fileExts = loader.fileExts;
+  for (var i = 0, ii = fileExts.length; !module && i < ii; ++i) {
+    var filepath = fileExts[i].replace('?', path);
     module = loader.packages[filepath];
   }
+
   return module;
+};
+
+loader.getPackageForDirectory = function(path) {
+  path = loader.normalize(path);
+
+  var module;
+  var packagePackage = loader.packages[loader.joinpath(path, 'package.json')];
+  if (packagePackage) {
+    var info = _require(packagePackage);
+    if (info.main) {
+      module = loader.getPackageForFile(loader.joinpath(path, info.main));
+    }
+  }
+
+  if (!module) {
+    module = loader.getPackageForFile(loader.joinpath(path, 'index'));
+  }
+
+  return module;
+};
+
+loader.getPackageFromBuildOutput = function(path) {
+  var moduleBuildPath = loader.normalize(loader.joinpath('build', 'js', path));
+
+  return loader.getPackageForPath(moduleBuildPath);
+};
+
+// Nested node_modules are banned, so we can do a simple search here.
+loader.getPackageForNodeModule = function(path) {
+  var modulePath = loader.normalize(loader.joinpath('node_modules', path));
+
+  return loader.getPackageForPath(modulePath);
 };
 
 loader.getPackageByLineno = function(lineno) {
@@ -108,7 +178,7 @@ return loader;
 
 })();
 
-__loader.define('safe.js', 111, function(exports, module, require) {
+__loader.define('safe', 181, function(exports, module, require) {
 /* safe.js - Building a safer world for Pebble.JS Developers
  *
  * This library provides wrapper around all the asynchronous handlers that developers
@@ -323,9 +393,8 @@ if (ajax) {
 }
 
 module.exports = safe;
-
 });
-__loader.define('src/js/app.js', 328, function(exports, module, require) {
+__loader.define('src/js/app.js', 397, function(exports, module, require) {
 var xhrRequest = function (url, type, callback) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function () {
@@ -723,11 +792,19 @@ Pebble.addEventListener("webviewclosed",
     );
   }
 );
-
+});
+__loader.define('build/js/message_keys.json', 796, function(exports, module, require) {
+module.exports = {
+    "KEY_CONDITIONS": 1,
+    "KEY_HOURS_TO": 2,
+    "KEY_MINUTES_TO": 3,
+    "KEY_SECONDS_STYLE": 4,
+    "KEY_TEMPERATURE": 0
+};
 });
 (function() {
   var safe = __loader.require('safe');
   safe.protect(function() {
-    __loader.require('src/js/app');
+    __loader.require('/src/js/app');
   })();
 })();

@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include "EffectLayer/src/effect_layer.h"
 
 #define KEY_TEMPERATURE 0
 #define KEY_CONDITIONS 1
@@ -404,8 +405,15 @@ static void update_time() {
   // Write the current hours and minutes into a buffer
   static char s_buffer[10];
   static char s_date_buffer[12];
-  strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ? "%H:%M" : "%I:%M", tick_time);
-  strftime(s_date_buffer, sizeof(s_date_buffer),  "%d. %b", tick_time);
+
+
+
+  //strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ? "%H:%M" : "%I:%M", tick_time);
+  snprintf(s_buffer, sizeof(s_buffer), "%d:%02d", tick_time->tm_hour, tick_time->tm_min);
+  static char s_month_buffer[8];
+  strftime(s_month_buffer, sizeof(s_month_buffer),  "%b", tick_time);
+
+  snprintf(s_date_buffer, sizeof(s_date_buffer), "%d. %s", tick_time->tm_mday, s_month_buffer);
 
   // Display this time on the TextLayer
   text_layer_set_text(s_time_layer, s_buffer);
@@ -421,8 +429,11 @@ static void update_time() {
   static char bu[8];
   if (diff >= 0 && diff <= 60 && diffOld != diff){
     snprintf(bu, sizeof(bu), "%d min", diff);
+    text_layer_set_text(s_time_until_layer, bu);
   }
-  text_layer_set_text(s_time_until_layer, bu);
+  else {
+    text_layer_set_text(s_time_until_layer, "");
+  }
   if (diff == 0){
     vibes_short_pulse();
   }
@@ -475,6 +486,9 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   if (tick_time->tm_sec == 0){
     update_time();
   }
+  if (tick_time->tm_min == 37 && tick_time->tm_hour == 13){
+    layer_set_hidden(text_layer_get_layer(s_time_layer), tick_time->tm_sec%2 == 0);
+  }
   seconds = tick_time->tm_sec;
   layer_mark_dirty(layer);
   if(tick_time->tm_min % 30 == 0 && seconds == 0) {
@@ -495,7 +509,7 @@ static void main_window_load(Window *window){
   secondsColor = GColorRed;
 
   s_weather_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));
-  s_time_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ORBITRON_44));
+  s_time_font =  fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ORBITRON_40));
   s_con_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_8));
   s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_24));
   s_time_until_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POPPINS_20));

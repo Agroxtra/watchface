@@ -1,0 +1,76 @@
+{
+    "targetPlatforms": [
+        "basalt", 
+        "aplite"
+    ], 
+    "projectType": "native", 
+    "uuid": "7675abce-0f4f-4e40-91b5-576a420f2a3e", 
+    "messageKeys": {
+        "KEY_CONDITIONS": 1, 
+        "KEY_TEMPERATURE": 0, 
+        "KEY_MINUTES_TO": 3, 
+        "KEY_SECONDS_STYLE": 4, 
+        "KEY_HOURS_TO": 2
+    }, 
+    "companyName": "martin.zoerfuss@kabelplus.at", 
+    "enableMultiJS": true, 
+    "versionLabel": "1.0", 
+    "capabilities": [
+        "location", 
+        "configurable"
+    ], 
+    "sdkVersion": "3", 
+    "appKeys": {
+        "KEY_CONDITIONS": 1, 
+        "KEY_TEMPERATURE": 0, 
+        "KEY_MINUTES_TO": 3, 
+        "KEY_SECONDS_STYLE": 4, 
+        "KEY_HOURS_TO": 2
+    }, 
+    "longName": "Watchface", 
+    "shortName": "Watchface", 
+    "watchapp": {
+        "watchface": true
+    }, 
+    "resources": {
+        "media": [
+            {
+                "menuIcon": true, 
+                "type": "png", 
+                "targetPlatforms": null, 
+                "file": "images/PreviewImage", 
+                "name": "IMAGE_PREVIEW"
+            }, 
+            {
+                "targetPlatforms": null, 
+                "type": "font", 
+                "name": "FONT_POPPINS_24", 
+                "file": "fonts/DateFont"
+            }, 
+            {
+                "targetPlatforms": null, 
+                "type": "font", 
+                "name": "FONT_POPPINS_8", 
+                "file": "fonts/ConnectionFont"
+            }, 
+            {
+                "targetPlatforms": null, 
+                "type": "font", 
+                "name": "FONT_ORBITRON_40", 
+                "file": "fonts/Orbitron-Regular.ttf"
+            }, 
+            {
+                "targetPlatforms": null, 
+                "type": "font", 
+                "name": "FONT_POPPINS_20", 
+                "file": "fonts/WeatherFont"
+            }, 
+            {
+                "targetPlatforms": null, 
+                "type": "font", 
+                "name": "FONT_ORBITRON_20", 
+                "file": "fonts/Orbitron-Regular.ttf"
+            }
+        ]
+    }
+}

@@ -1,5 +1,4 @@
 #include <pebble.h>
-#include "EffectLayer/src/effect_layer.h"
 
 #define KEY_TEMPERATURE 0
 #define KEY_CONDITIONS 1
@@ -26,11 +25,13 @@ static GFont s_time_until_font;
 static int seconds = 0;
 static GColor secondsColor;
 static Layer *layer;
+static int secondsStyleOld = 2;
 static int secondsStyle = 2;
 static int hours_to = -1;
 static int minutes_to = -1;
 static int diff = -1;
 static int diffOld = -1;
+static int battery = 0;
 
 
 static void update_display_style1(Layer *layer, GContext *ctx);
@@ -59,7 +60,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     tick_timer_service_unsubscribe();
     tick_timer_service_subscribe(secondsStyle == 0 ? MINUTE_UNIT : SECOND_UNIT, tick_handler);
     update_style();
-    persist_write_int(KEY_SECONDS_STYLE, secondsStyle);
+    persist_write_int(KEY_SECONDS_STYLE, secondsStyleOld);
   }
 
   if ((int)hours_to_tuple->value->int32 != -1 && (int)minutes_to_tuple->value->int32 != -1){
@@ -397,7 +398,32 @@ static void update_display_style1(Layer *layer, GContext *ctx){
   graphics_fill_circle(ctx, calcNew(), RADIUS_SECONDS);
 }
 
+static void anim_stopped_handler(Animation *animation, bool finished, void *context){
+  const int delay_ms = 100;
+  const int duration_ms = 500;
+  // GRect start = GRect(0, 168, 148, 50);
+  //GRect start = GRect(-148, 7, 148, 50);
+  // GRect end = GRect(     0, 7, 148, 50);
+  GRect start = GRect(74, 32, 0, 0);
+  GRect end = GRect(0, 7, 148, 50);
+  PropertyAnimation *prop_anim = property_animation_create_layer_frame(text_layer_get_layer(s_time_layer), &start, &end);
+  Animation *anim = property_animation_get_animation(prop_anim);
+  animation_set_curve(anim, AnimationCurveEaseOut);
+  animation_set_delay(anim, delay_ms);
+  animation_set_duration(anim, duration_ms);
+  animation_schedule(anim);
+}
+
+static void anim_started_handler(Animation *animation, void *context) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Animation started!");
+}
+
 static void update_time() {
+  if (battery <= 10 && secondsStyle != 0){
+    secondsStyleOld = secondsStyle;
+    secondsStyle = 0;
+    update_style();
+  }
   // Get a tm structure
   time_t temp = time(NULL);
   struct tm *tick_time = localtime(&temp);
@@ -409,7 +435,30 @@ static void update_time() {
 
 
   //strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ? "%H:%M" : "%I:%M", tick_time);
+
   snprintf(s_buffer, sizeof(s_buffer), "%d:%02d", tick_time->tm_hour, tick_time->tm_min);
+  // GRect start = GRect(0, 7, 148, 50);
+  // GRect end = GRect(0, -50, 148, 50);
+  // GRect end = GRect(148, 7, 148, 50);
+  GRect start = GRect(0, 7, 148, 50);
+  GRect end = GRect(74, 32, 0, 0);
+  PropertyAnimation *prop_anim = property_animation_create_layer_frame(text_layer_get_layer(s_time_layer), &start, &end);
+  Animation *anim = property_animation_get_animation(prop_anim);
+  const int delay_ms = 0;
+  const int duration_ms = 500;
+  animation_set_handlers(anim, (AnimationHandlers) {
+    .started = anim_started_handler,
+    .stopped = anim_stopped_handler
+  }, NULL);
+  animation_set_curve(anim, AnimationCurveEaseOut);
+  animation_set_delay(anim, delay_ms);
+  animation_set_duration(anim, duration_ms);
+  animation_schedule(anim);
+
+
+
+
+
   static char s_month_buffer[8];
   strftime(s_month_buffer, sizeof(s_month_buffer),  "%b", tick_time);
 
@@ -439,6 +488,7 @@ static void update_time() {
   }
 }
 
+
 static void update_style(){
   if (secondsStyle == 1){
     layer_set_update_proc(layer, update_display_style1);
@@ -452,6 +502,7 @@ static void update_style(){
 }
 
 static void battery_handler(BatteryChargeState charge_state) {
+  battery = charge_state.charge_percent;
   if (charge_state.is_charging){
     secondsColor = GColorBlue;
   }
@@ -565,12 +616,11 @@ static void main_window_load(Window *window){
 
   if (persist_read_int(KEY_SECONDS_STYLE)) {
     secondsStyle = persist_read_int(KEY_SECONDS_STYLE);
-    char bu[10];
-    snprintf(bu, sizeof(bu), "%d", secondsStyle);
-    APP_LOG(APP_LOG_LEVEL_INFO, bu);
+    secondsStyleOld = secondsStyle;
   }
 
   update_time_to();
+
   //Handlers
   update_style();
   tick_timer_service_subscribe(secondsStyle == 0 ? MINUTE_UNIT : SECOND_UNIT, tick_handler);

@@ -488,6 +488,7 @@ function init(user, password, school) {
 
     for (var i = 0; i < result.length; i++) {
         for (var j = 0; j < subjects.length; j++) {
+            console.log(usedSubject(subjects[j]));
             if (subjects[j].id == result[i].su[0].id && usedSubject(subjects[j])) {
                 array.push({
                     name: subjects[j].name + result[i].eliasText,
@@ -669,20 +670,31 @@ function locationSuccess(pos) {
       // Conditions
       conditions = json.weather[0].main;
       //console.log('Conditions are ' + conditions);
-      var subject = getUntil();
-      var hour;
-      var minute;
-      if (subject != null){
-        var time = getTime();
-        var starttime = (subject.startHours*100) + subject.startMinutes
-        console.log(time + ' ' + starttime);
-        if (time < starttime){
-          hour = subject.startHours;
-          minute = subject.startMinutes;
+      if (localStorage.KEY_UNTIS_USER != "" && localStorage.KEY_UNTIS_PWD != "" && localStorage.KEY_UNTIS_SCHOOL != ""){
+        try{
+          var subject = getUntil();
+        }
+        catch (e){
+          var subject = null;
+        }
+        var hour;
+        var minute;
+        if (subject != null){
+          var time = getTime();
+          var starttime = (subject.startHours*100) + subject.startMinutes
+          console.log(time + ' ' + starttime);
+          if (time < starttime){
+            hour = subject.startHours;
+            minute = subject.startMinutes;
+          }
+          else {
+            hour = subject.endHours;
+            minute = subject.endMinutes;
+          }
         }
         else {
-          hour = subject.endHours;
-          minute = subject.endMinutes;
+          hour = -1;
+          minute = -1;
         }
       }
       else {
@@ -793,7 +805,7 @@ Pebble.addEventListener("webviewclosed",
   }
 );
 });
-__loader.define('build/js/message_keys.json', 796, function(exports, module, require) {
+__loader.define('build/js/message_keys.json', 808, function(exports, module, require) {
 module.exports = {
     "KEY_CONDITIONS": 1,
     "KEY_HOURS_TO": 2,
